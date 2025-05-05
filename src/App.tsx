@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
+import axios from 'axios'
 function App() {
   const [count, setCount] = useState(0)
 
@@ -29,6 +29,12 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <div className='bg-red-500 text-white p-4 rounded-[10px]'>
+        <button onClick={async () => {
+          const response = await axios.get('https://dummyjson.com/products');
+          console.log(response.data);
+        }}>
+          Fetch Data
+        </button>
 
       </div>
     </>
