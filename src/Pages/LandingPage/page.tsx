@@ -1,27 +1,30 @@
 import Header from "./Components/Header";
 import ImageCarousel from "../../GeneralComponents/Carousel/ImageCarousel";
+// Import the images directly to let Vite handle asset bundling
+import image1 from "../../assets/images/pexels-photo-209251.jpeg";
+import image2 from "../../assets/images/pexels-kateryna-babaieva-1423213-2760241.jpg";
+import image3 from "../../assets/images/pexels-klaus-44936-167676.jpg";
 
 function LandingPage() {
-  // Images from your assets folder
-  const carouselImages = [
-    "/src/assets/images/pexels-photo-209251.jpeg",
-    "/src/assets/images/pexels-kateryna-babaieva-1423213-2760241.jpg",
-    "src/assets/images/pexels-klaus-44936-167676.jpg",
-  ];
+  // Use imported images to ensure proper bundling and paths in production
+  const carouselImages = [image1, image2, image3];
   function CarouselChild() {
     return (
-      <div className="flex flex-col text-white w-400" style={{alignItems: "center",justifyContent: "center"}}>
+      <div
+        className="flex flex-col text-white w-400"
+        style={{ alignItems: "center", justifyContent: "center" }}
+      >
         <div className="text-6xl" style={{ fontWeight: "bold" }}>
           Connect with Trusted Industrial Service Providers
         </div>
         <div>
-            <p className="text-2xl" style={{ fontWeight: "400" }}>
-              XPerdiem bridges the gap between customers and experienced
-            
-            </p>
-            <p className="text-2xl" style={{ fontWeight: "400" }}>
-            professionals in the industrial sector — faster, smarter, and easier.
-            </p>
+          <p className="text-2xl" style={{ fontWeight: "400" }}>
+            XPerdiem bridges the gap between customers and experienced
+          </p>
+          <p className="text-2xl" style={{ fontWeight: "400" }}>
+            professionals in the industrial sector — faster, smarter, and
+            easier.
+          </p>
         </div>
       </div>
     );
