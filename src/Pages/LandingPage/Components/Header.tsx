@@ -13,7 +13,7 @@ function Header() {
       className="flex flex-row text-white w-full h-fit px-4 py-4"
       style={baseStyle}
     >
-      <div className="text-2xl font-bold">XPerdiem</div>
+      <div className="text-2xl font-bold" style={{fontFamily:"Poppins"}}>XPerdiem</div>
       <Button
         style={{ marginLeft: "auto" }}
         sizeFactor={0.8}

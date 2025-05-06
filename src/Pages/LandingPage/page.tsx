@@ -1,9 +1,10 @@
 import Header from "./Components/Header";
 import ImageCarousel from "../../GeneralComponents/Carousel/ImageCarousel";
 // Import the images directly to let Vite handle asset bundling
-import image1 from "../../assets/images/pexels-photo-209251.jpeg";
+import image1 from "../../assets/images/pexels-life-of-pix-2391.jpg";
 import image2 from "../../assets/images/pexels-kateryna-babaieva-1423213-2760241.jpg";
 import image3 from "../../assets/images/pexels-klaus-44936-167676.jpg";
+import Card from "./Components/Card";
 
 function LandingPage() {
   // Use imported images to ensure proper bundling and paths in production
@@ -35,12 +36,15 @@ function LandingPage() {
       <Header />
 
       {/* Hero section with carousel */}
-      <div className="h-[70vh] w-full">
+      <div className="h-[75vh] w-full">
         <ImageCarousel
           images={carouselImages}
           interval={6000}
           children={<CarouselChild />}
         />
+      </div>
+      <div className="flex flex-row items-center justify-center mt-5">
+        <Card />
       </div>
     </div>
   );

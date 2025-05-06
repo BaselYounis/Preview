@@ -4,8 +4,10 @@
 
 }
 @theme{
-    --color-primary-dark:#0d2038;
-    --color-primary-light:#1b334f;
+    --color-primary-dark:#1C1C1C;
+    /* --color-primary-dark:#0d2038; */
+    /* --color-primary-light:#1b334f; */
+    --color-primary-light:#2D2D2D;
     --color-white-gray:#d4d6d5;
 }
 
