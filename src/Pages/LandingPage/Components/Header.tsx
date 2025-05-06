@@ -1,11 +1,17 @@
+import type { CSSProperties } from "react";
 import { theme } from "../../../Constants/Colors";
 import Button from "../../../GeneralComponents/Button";
 
 function Header() {
+    const baseStyle:CSSProperties={
+        background: `linear-gradient(to right, ${theme.colors.primaryDark()}, ${theme.colors.primaryLight()})`,
+     
+        alignItems: "center",
+    }
   return (
     <div
-      className="flex flex-row text-white w-full h-fit bg-primary-dark px-4 py-4"
-      style={{ alignItems: "center" }}
+      className="flex flex-row text-white w-full h-fit px-4 py-4"
+      style={baseStyle}
     >
       <div className="text-2xl font-bold">XPerdiem</div>
       <Button
