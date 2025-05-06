@@ -5,6 +5,7 @@ import image1 from "../../assets/images/pexels-life-of-pix-2391.jpg";
 import image2 from "../../assets/images/pexels-kateryna-babaieva-1423213-2760241.jpg";
 import image3 from "../../assets/images/pexels-klaus-44936-167676.jpg";
 import Card from "./Components/Card";
+import { AttachMoneyOutlined, SearchOutlined, WorkOutlineOutlined } from "@mui/icons-material";
 
 function LandingPage() {
   // Use imported images to ensure proper bundling and paths in production
@@ -43,9 +44,24 @@ function LandingPage() {
           children={<CarouselChild />}
         />
       </div>
-      <div className="flex flex-row items-center justify-center mt-5">
-        <Card />
+      <div className="flex flex-row items-center justify-center mt-5 gap-x-5">
+        <Card
+          Icon={WorkOutlineOutlined}
+          title="Verified Professionals"
+          description="All service providers go through a rigorous vetting process to ensure reliability and quality work."
+        />
+        <Card
+          Icon={SearchOutlined}
+          title="Smart Matching"
+          description="Our platform intelligently matches you with the best professionals for your specific industrial needs."
+        />
+        <Card
+          Icon={AttachMoneyOutlined}
+          title="Transparent Pricing"
+          description="Get clear, upfront pricing with no hidden fees. Make informed decisions with confidence."
+        />
       </div>
+    <span className="h-10"/>
     </div>
   );
 }
