@@ -36,8 +36,8 @@ const Button: FunctionComponent<ButtonProps> = ({
       isHovered && props.onHoverTextColor
         ? props.onHoverTextColor
         : props.textColor || "#000000",
-    fontFamily: "Poppins",
-    fontWeight: "500",
+    fontFamily: "sans-serif",
+    fontWeight: "400",
 
     width: `${widthFactor * 75}px`,
     height: `${heightFactor * 40}px`,

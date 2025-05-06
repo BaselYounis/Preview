@@ -6,6 +6,7 @@ import image2 from "../../assets/images/pexels-kateryna-babaieva-1423213-2760241
 import image3 from "../../assets/images/pexels-klaus-44936-167676.jpg";
 import Card from "./Components/Card";
 import { AttachMoneyOutlined, SearchOutlined, WorkOutlineOutlined } from "@mui/icons-material";
+import Footer from "./Components/Footer";
 
 function LandingPage() {
   // Use imported images to ensure proper bundling and paths in production
@@ -44,7 +45,7 @@ function LandingPage() {
           children={<CarouselChild />}
         />
       </div>
-      <div className="flex flex-row items-center justify-center mt-5 gap-x-5">
+      <div className="flex flex-row items-center justify-center mt-20 mb-20 gap-x-5">
         <Card
           Icon={WorkOutlineOutlined}
           title="Verified Professionals"
@@ -61,7 +62,8 @@ function LandingPage() {
           description="Get clear, upfront pricing with no hidden fees. Make informed decisions with confidence."
         />
       </div>
-    <span className="h-10"/>
+    
+      <Footer/>
     </div>
   );
 }
