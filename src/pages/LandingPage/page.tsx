@@ -4,15 +4,22 @@ import image1 from "../../assets/images/pexels-life-of-pix-2391.jpg";
 import image2 from "../../assets/images/pexels-kateryna-babaieva-1423213-2760241.jpg";
 import image3 from "../../assets/images/pexels-klaus-44936-167676.jpg";
 
-import { AttachMoneyOutlined, SearchOutlined, WorkOutlineOutlined } from "@mui/icons-material";
-import Footer from "./Components/Footer";
+import {
+  AttachMoneyOutlined,
+  SearchOutlined,
+  WorkOutlineOutlined,
+} from "@mui/icons-material";
+import Footer from "../../GeneralComponents/Footer";
 import Card from "./Components/Card";
-import Header from "./Components/Header";
-
+import Header from "../../GeneralComponents/Header";
+import Button from "../../GeneralComponents/Button";
+import { useNavigate } from "@tanstack/react-router";
+import { theme } from "../../Constants/Colors";
 
 function LandingPage() {
   // Use imported images to ensure proper bundling and paths in production
   const carouselImages = [image1, image2, image3];
+  const navigate = useNavigate();
   function CarouselChild() {
     return (
       <div
@@ -37,7 +44,19 @@ function LandingPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header>
+        <Button
+          style={{ marginLeft: "auto" }}
+          sizeFactor={0.8}
+          onHoverColor={theme.colors.whiteGray()}
+          textColor={theme.colors.primaryLight()}
+          onClick={() => {
+            navigate({
+              to: "/login",
+            });
+          }}
+        />
+      </Header>
 
       {/* Hero section with carousel */}
       <div className="h-[75vh] w-full">
@@ -64,8 +83,21 @@ function LandingPage() {
           description="Get clear, upfront pricing with no hidden fees. Make informed decisions with confidence."
         />
       </div>
-    
-      <Footer/>
+
+      <Footer>
+        <div className="flex flex-col items-center justify-center mt-10 mb-10 gap-y-2">
+          <div className="font-bold text-4xl">Ready to Get Started?</div>
+          <p className="mt-2">
+            Join XPerdiem and transform how you find and hire industrial service
+            providers.
+          </p>
+        </div>
+        <Button
+          label="Sign Up Now"
+          style={{ width: "10rem", fontSize: "14px" }}
+        />
+        <span className="h-5" />
+      </Footer>
     </div>
   );
 }
