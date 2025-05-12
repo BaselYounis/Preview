@@ -3,16 +3,17 @@
  */
 
 export const theme = {
-    colors: {
-      primaryDark: () => getCSSVariable('--color-primary-dark'),
-      primaryLight: () => getCSSVariable('--color-primary-light'),
-      whiteGray: () => getCSSVariable('--color-white-gray'),
-      // Add more color getters as needed
-    }
-  };
-  
-  function getCSSVariable(variableName: string): string {
-    return getComputedStyle(document.documentElement)
-      .getPropertyValue(variableName)
-      .trim();
-  }
+  colors: {
+    primaryDark: () => getCSSVariable("--color-primary-dark"),
+    primaryLight: () => getCSSVariable("--color-primary-light"),
+    lightGray: () => getCSSVariable("--color-light-gray"),
+    whiteGray: () => getCSSVariable("--color-white-gray"),
+    // Add more color getters as needed
+  },
+};
+
+function getCSSVariable(variableName: string): string {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(variableName)
+    .trim();
+}

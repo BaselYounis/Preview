@@ -3,13 +3,22 @@ import TextField from "../../../GeneralComponents/TextField";
 import { useState } from "react";
 import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
-
+import Checkmark from "../../../GeneralComponents/Checkmark";
+type LoginForm = {
+  email: string;
+  password: string;
+  remember: boolean;
+};
 function LoginCard() {
   const baseStyle: CSSProperties = {
     boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
     aspectRatio: "553/832",
   };
-  const [email, setEmail] = useState<string>("");
+  const [form, setForm] = useState<LoginForm>({
+    email: "",
+    password: "",
+    remember: false,
+  });
 
   return (
     <div className="flex flex-col w-full h-fit justify-center items-center mt-30">
@@ -27,26 +36,38 @@ function LoginCard() {
           <TextField
             label="Email Address"
             style={{ width: "100%" }}
-            value={email}
-            setValue={setEmail}
-            placeholder="your@exmaple.com"
+            value={form.email}
+            setValue={(value) => setForm({ ...form, email: value })}
+            placeholder="your@example.com"
           />
           <TextField
             label="Password"
             type="password"
             style={{ width: "100%" }}
-            value={email}
-            setValue={setEmail}
+            value={form.password}
+            setValue={(value) => setForm({ ...form, password: value })}
             placeholder="Enter your password"
           />
+          <Checkmark
+            value={form.remember}
+            setValue={(value) => setForm({ ...form, remember: value })}
+            label="Remember me"
+          />
+          <Button
+            backgroundColor={theme.colors.primaryLight()}
+            textColor="white"
+            label="Log In"
+            style={{
+              alignSelf: "center",
+              width: "100%",
+              // marginTop: "20px",
+              fontSize: "1rem",
+              height: "3rem",
+              borderRadius: "8px",
+            }}
+            onHoverColor={theme.colors.primaryDark()}
+          />
         </div>
-        <Button
-          backgroundColor={theme.colors.primaryLight()}
-          textColor="white"
-          label="Log In"
-          style={{ alignSelf: "center", width: "100%",marginTop: "20px", fontSize: "1rem" }}
-          onHoverColor={theme.colors.primaryDark()}
-        />
       </div>
     </div>
   );
