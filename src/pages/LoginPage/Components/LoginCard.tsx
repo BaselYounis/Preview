@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
 import Checkmark from "../../../GeneralComponents/Checkmark";
-import { Route as preSignUpRoute } from "../../../routes/preSignUp";
+import { Route as signUpRoute } from "../../../routes/signup";
 import { Route as root } from "../../../routes/__root";
 import { useNavigate } from "@tanstack/react-router";
 type LoginForm = {
@@ -18,7 +18,7 @@ function onLoginButtonClicked() {}
 function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
   navigate({
     from: root.path,
-    to: preSignUpRoute.path,
+    to: signUpRoute.path,
     // Ensure we're navigating to the root preSignUp path
   });
 }

@@ -15,13 +15,13 @@ import Header from "../../GeneralComponents/Header";
 import Button from "../../GeneralComponents/Button";
 import { useNavigate } from "@tanstack/react-router";
 import { theme } from "../../Constants/Colors";
-import { Route as preSignUpRoute } from "../../routes/preSignUp";
+import { Route as signUpRoute } from "../../routes/signup";
 import { Route as root } from "../../routes/__root";
 
 function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
   navigate({
     from: root.path,
-    to: preSignUpRoute.path,
+    to: signUpRoute.path,
     // Ensure we're navigating to the root preSignUp path
   });
 }
