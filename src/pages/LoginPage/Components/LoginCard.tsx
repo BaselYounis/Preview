@@ -4,6 +4,9 @@ import { useState } from "react";
 import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
 import Checkmark from "../../../GeneralComponents/Checkmark";
+import { Route as preSignUpRoute } from "../../../routes/preSignUp";
+import { Route as root } from "../../../routes/__root";
+import { useNavigate } from "@tanstack/react-router";
 type LoginForm = {
   email: string;
   password: string;
@@ -12,14 +15,20 @@ type LoginForm = {
 
 function onLoginButtonClicked() {}
 
-function onSignUpButtonClicked() {}
+function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
+  navigate({
+    from: root.path,
+    to: preSignUpRoute.path,
+    // Ensure we're navigating to the root preSignUp path
+  });
+}
 
 function onForgotPasswordButtonClicked() {}
 
 function LoginCard() {
   const baseStyle: CSSProperties = {
     boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-    aspectRatio: "650/832",
+    aspectRatio: "650/830",
   };
   const [form, setForm] = useState<LoginForm>({
     email: "",
@@ -27,6 +36,7 @@ function LoginCard() {
     remember: false,
   });
 
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col w-full h-fit justify-center items-center mt-45 ">
       <div
@@ -91,8 +101,8 @@ function LoginCard() {
         <div className="flex flex-row w-full gap-x-1 items-center bg-gray-50 h-20 justify-center mt-auto text-gray-600 p-2">
           Don't have an account?
           <div
-            onClick={() => onSignUpButtonClicked}
-            className="text-gray-600 cursor-pointer hover:underline"
+            onClick={() => onSignUpButtonClicked(navigate)}
+            className="text-primary-dark cursor-pointer hover:underline"
           >
             Sign Up
           </div>

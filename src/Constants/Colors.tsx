@@ -6,6 +6,7 @@ export const theme = {
   colors: {
     primaryDark: () => getCSSVariable("--color-primary-dark"),
     primaryLight: () => getCSSVariable("--color-primary-light"),
+    primaryLighter:()=>getCSSVariable("--color-primary-lighter"),
     lightGray: () => getCSSVariable("--color-light-gray"),
     whiteGray: () => getCSSVariable("--color-white-gray"),
     // Add more color getters as needed

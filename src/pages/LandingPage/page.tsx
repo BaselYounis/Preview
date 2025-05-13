@@ -15,7 +15,16 @@ import Header from "../../GeneralComponents/Header";
 import Button from "../../GeneralComponents/Button";
 import { useNavigate } from "@tanstack/react-router";
 import { theme } from "../../Constants/Colors";
+import { Route as preSignUpRoute } from "../../routes/preSignUp";
+import { Route as root } from "../../routes/__root";
 
+function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
+  navigate({
+    from: root.path,
+    to: preSignUpRoute.path,
+    // Ensure we're navigating to the root preSignUp path
+  });
+}
 function LandingPage() {
   // Use imported images to ensure proper bundling and paths in production
   const carouselImages = [image1, image2, image3];
@@ -46,12 +55,14 @@ function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <Header>
         <Button
-          style={{ marginLeft: "auto" }}
+          style={{ marginLeft: "auto", marginRight: "2rem" }}
           sizeFactor={0.8}
-          onHoverColor={theme.colors.whiteGray()}
-          textColor={theme.colors.primaryLight()}
+          backgroundColor={theme.colors.primaryDark()}
+          onHoverColor={theme.colors.primaryLight()}
+          textColor={"white"}
           onClick={() => {
             navigate({
+              from: "/",
               to: "/login",
             });
           }}
@@ -95,6 +106,7 @@ function LandingPage() {
         <Button
           label="Sign Up Now"
           style={{ width: "10rem", fontSize: "14px" }}
+          onClick={() => onSignUpButtonClicked(navigate)}
         />
         <span className="h-5" />
       </Footer>

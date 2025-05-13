@@ -1,5 +1,6 @@
 import Footer from "../../GeneralComponents/Footer";
 import Header from "../../GeneralComponents/Header";
+import FooterContent from "./Components/FooterContent";
 import LoginCard from "./Components/LoginCard";
 
 function LoginPage() {
@@ -7,7 +8,9 @@ function LoginPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <LoginCard />
-      <Footer />
+      <Footer>
+        <FooterContent />
+      </Footer>
     </div>
   );
 }
