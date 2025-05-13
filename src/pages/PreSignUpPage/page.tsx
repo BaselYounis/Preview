@@ -8,6 +8,8 @@ import type { CSSProperties } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuilding, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef } from "react";
+import ProviderForm from "./Components/ProviderForm";
 interface AccountFeatureProps {
   label: string;
   className?: string;
@@ -36,6 +38,8 @@ interface CardProps {
   description: string;
   buttonLabel: string;
   children?: React.ReactNode;
+  isSelected: boolean;
+  onSelection: () => void;
 }
 function Card({
   style,
@@ -44,14 +48,15 @@ function Card({
 }: CardProps) {
   const baseStyle: CSSProperties = {
     aspectRatio: "700/600",
-
+    border: props.isSelected ? `2px solid ${theme.colors.primaryDark()}` : "",
     ...style,
   };
   return (
     <div
       className="flex flex-col bg-white w-155   rounded-[10px] border-1 border-gray-300 p-4 px-6
-      hover:border-primary-dark hover:-translate-y-1 transition-all duration-300 ease-in-out cursor-pointer"
+      hover:border-primary-dark hover:-translate-y-1 transition-transform duration-300 ease-in-out cursor-pointer "
       style={baseStyle}
+      onClick={props.onSelection}
     >
       <div className="flex flex-col items-center mx-auto justify-center bg-gray-100 rounded-full w-25 h-25">
         <FontAwesomeIcon
@@ -72,6 +77,11 @@ function Card({
         {props.description}
       </p>
       <div className="flex flex-col mt-5 ml-2 gap-y-5">{props.children}</div>
+      {props.isSelected && (
+        <div className="bg-primary-light rounded-full h-5 w-5 flex items-center justify-center mt-5 mx-auto p-4">
+          <FontAwesomeIcon icon={faCheck} className="text-white" />
+        </div>
+      )}
       <Button
         textColor="white"
         backgroundColor={theme.colors.primaryDark()}
@@ -91,7 +101,8 @@ function Card({
 
 function SignUpPage() {
   const navigate = useNavigate();
-
+  const [selection, setSelection] = useState(0);
+  const providerFormRef = useRef<HTMLDivElement>(null);
   return (
     <div className="flex flex-col min-h-screen">
       <Header>
@@ -124,13 +135,21 @@ function SignUpPage() {
           leading marketplace for <p>industrial services</p>
         </p>
         <p
-          style={{ fontFamily: "Poppins", fontWeight: "400" }}
+          style={{ fontFamily: "Poppins", fontWeight: "500" }}
           className="text-2xl mt-10"
         >
           I want to sign up as a...
         </p>
         <div className="flex flex-row gap-x-10">
           <Card
+            isSelected={selection === 0}
+            onSelection={() => {
+              setSelection(0);
+              providerFormRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }}
             style={{ marginTop: "20px" }}
             headerLabel="Service Provider"
             description="Offer your industrial services to businesses and grow your client base"
@@ -143,6 +162,10 @@ function SignUpPage() {
             <AccountFeature label="Get paid securely through our platform" />
           </Card>
           <Card
+            isSelected={selection === 1}
+            onSelection={() => {
+              setSelection(1);
+            }}
             style={{ marginTop: "20px" }}
             headerLabel="Business Customer"
             description="Find and hire qualified service providers for your industrial needs"
@@ -155,6 +178,7 @@ function SignUpPage() {
             <AccountFeature label="Manage all your service needs in one place" />
           </Card>
         </div>
+        <ProviderForm ref={providerFormRef} className="mt-100" />
       </div>
       <Footer children={<FooterContent />} />
     </div>
