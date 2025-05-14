@@ -1,5 +1,6 @@
-import { useState, type FunctionComponent } from "react";
+import React, { useState, type FunctionComponent } from "react";
 import { theme } from "../Constants/Colors";
+import ErrorComponent, { type ErrorComponentProps } from "./ErrorComponent";
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   sizeFactor?: number;
   widthFactor?: number;
@@ -10,6 +11,9 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   value: string;
   setValue: (value: string) => void;
+  inputCleaner?: (value: string) => string;
+  inputValidator?: (value: string) => { success: boolean; message: string };
+  ErrorComp?: React.ComponentType<ErrorComponentProps>;
 }
 
 const TextField: FunctionComponent<TextFieldProps> = ({
@@ -17,9 +21,11 @@ const TextField: FunctionComponent<TextFieldProps> = ({
   widthFactor = 1,
   heightFactor = 1,
   fontFactor = 1,
+  ErrorComp = ErrorComponent,
   ...props
 }) => {
   const [isHovered, setHovered] = useState(false);
+  const [allowValidation, setAllowValidation] = useState(false);
   const primaryDarkColor = theme.colors.primaryDark();
   // Convert the primary dark color to rgba format with lower opacity
   const shadowColor = primaryDarkColor.startsWith("#")
@@ -61,6 +67,10 @@ const TextField: FunctionComponent<TextFieldProps> = ({
           value={props.value}
           onChange={(e) => {
             props.onChange?.(e);
+            setAllowValidation(true);
+            if (props.inputCleaner)
+              e.target.value = props.inputCleaner(e.target.value);
+
             props.setValue(e.target.value);
           }}
           placeholder={props.placeholder || "Enter text here..."}
@@ -74,6 +84,12 @@ const TextField: FunctionComponent<TextFieldProps> = ({
           className="bg-white"
         />
       </div>
+      {allowValidation &&
+        props.inputValidator &&
+        !props.inputValidator(props.value).success &&
+        ErrorComp && (
+          <ErrorComp errorMessage={props.inputValidator(props.value).message} />
+        )}
     </div>
   );
 };

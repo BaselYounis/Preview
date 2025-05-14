@@ -178,7 +178,7 @@ function SignUpPage() {
             <AccountFeature label="Manage all your service needs in one place" />
           </Card>
         </div>
-        <ProviderForm ref={providerFormRef} className="mt-100" />
+        <ProviderForm ref={providerFormRef} className="mt-10" />
       </div>
       <Footer children={<FooterContent />} />
     </div>
