@@ -2,7 +2,7 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type FunctionComponent } from "react";
 export interface ErrorComponentProps {
-  errorMessage?: React.ReactNode;
+  errorMessage: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
 }

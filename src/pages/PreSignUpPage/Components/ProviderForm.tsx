@@ -16,10 +16,12 @@ import {
   PhoneNumberCleaner,
 } from "../ClientSide/CleanForm";
 import { useNavigate } from "@tanstack/react-router";
-import { API, SendToBackend } from "../../../API/Communication";
-import { ProviderURLManager } from "../../../API/BackendModules/ServiceProivder";
+import { HitBackend } from "../../../API/Communication";
+
 import { Route as loginRoute } from "../../../routes/login";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
+import { ServiceProviderAPI } from "../../../API/BackendModules/ServiceProivder";
+import { UserAPI } from "../../../API/BackendModules/User";
 
 interface ProviderFormProps {
   className?: string;
@@ -66,23 +68,44 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
     });
   }, []);
 
-  const onCreateAccountClicked = () => {
-    SendToBackend({
-      api: API,
-      url: ProviderURLManager.getURL("Create/"),
-      data: formData,
-      method: "POST",
-    }).then((response) => {
-      if (response.success) {
-        console.log(response.data);
-        navigate({
-          from: "/",
-          to: loginRoute.path,
-        });
-      } else {
-        setBackendErrorMessage(response.message ?? "Unknown Error");
+  const onCreateAccountClicked = async () => {
+    try {
+      // Attempt to create service provider account
+      const createResponse = await HitBackend({
+        url: ServiceProviderAPI.URLManager.getURL("Create/"),
+        data: formData,
+        method: "POST",
+      });
+
+      if (!createResponse.success) {
+        setBackendErrorMessage(
+          createResponse.message ?? "Failed to create account"
+        );
+        return;
       }
-    });
+
+      // Attempt to login with the created credentials
+      const loginResponse = await UserAPI.Login(
+        formData.email,
+        formData.password
+      );
+
+      if (!loginResponse.success) {
+        setBackendErrorMessage(
+          loginResponse.message ?? "Account created but login failed"
+        );
+        return;
+      }
+
+      // Navigate to login page on success
+      navigate({
+        from: "/",
+        to: loginRoute.path,
+      });
+    } catch (error) {
+      console.error("Account creation error:", error);
+      setBackendErrorMessage("An unexpected error occurred");
+    }
   };
 
   return (

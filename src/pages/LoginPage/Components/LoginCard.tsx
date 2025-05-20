@@ -7,13 +7,14 @@ import Checkmark from "../../../GeneralComponents/Checkmark";
 import { Route as signUpRoute } from "../../../routes/signup";
 import { Route as root } from "../../../routes/__root";
 import { useNavigate } from "@tanstack/react-router";
+import { UserAPI } from "../../../API/BackendModules/User";
+import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
+import { Route as loginRedirectorRoute } from "../../../routes/login-redirector";
 type LoginForm = {
   email: string;
   password: string;
   remember: boolean;
 };
-
-function onLoginButtonClicked() {}
 
 function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
   navigate({
@@ -30,12 +31,24 @@ function LoginCard() {
     boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
     aspectRatio: "650/830",
   };
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [form, setForm] = useState<LoginForm>({
     email: "",
     password: "",
     remember: false,
   });
-
+  const onLoginButtonClicked = async () => {
+    const loginResponse = await UserAPI.Login(form.email, form.password);
+    if (!loginResponse.success) {
+      setErrorMessage(loginResponse.message || "Login failed");
+      return;
+    }
+    navigate({
+      from: root.path,
+      to: loginRedirectorRoute.path,
+    });
+  };
   const navigate = useNavigate();
   return (
     <div className="flex flex-col w-full h-fit justify-center items-center mt-45 ">
@@ -96,6 +109,7 @@ function LoginCard() {
               onHoverColor={theme.colors.primaryDark()}
               onClick={onLoginButtonClicked}
             />
+            {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
           </div>
         </div>
         <div className="flex flex-row w-full gap-x-1 items-center bg-gray-50 h-20 justify-center mt-auto text-gray-600 p-2">

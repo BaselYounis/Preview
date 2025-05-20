@@ -123,25 +123,25 @@ function SignUpPage() {
         />
       </Header>
       <div className="flex flex-col h-fit w-full items-center justify-center mt-25">
-        <p
+        <div
           style={{ fontFamily: "Poppins", fontWeight: "600" }}
           className="text-4xl"
         >
           Join the XPerdiem Community
-        </p>
-        <p
+        </div>
+        <div
           style={{ fontFamily: "Poppins", fontWeight: "400" }}
           className="flex flex-col items-center justify-center text-xl text-gray-600 mt-2 "
         >
           Connect with industrial businesses or offer your services on the
-          leading marketplace for <p>industrial services</p>
-        </p>
-        <p
+          leading marketplace for <div>industrial services</div>
+        </div>
+        <div
           style={{ fontFamily: "Poppins", fontWeight: "500" }}
           className="text-2xl mt-10"
         >
           I want to sign up as a...
-        </p>
+        </div>
         <div className="flex flex-row gap-x-10">
           <Card
             isSelected={selection === 0}
