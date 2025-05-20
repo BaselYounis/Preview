@@ -8,8 +8,10 @@ import type { CSSProperties } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuilding, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import ProviderForm from "./Components/ProviderForm";
+import CustomerForm from "./Components/CustomerForm";
+import { Route as loginRoute } from "../../routes/login";
 interface AccountFeatureProps {
   label: string;
   className?: string;
@@ -101,8 +103,8 @@ function Card({
 
 function SignUpPage() {
   const navigate = useNavigate();
-  const [selection, setSelection] = useState(0);
-  const providerFormRef = useRef<HTMLDivElement>(null);
+  const [selection, setSelection] = useState(2);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header>
@@ -115,7 +117,7 @@ function SignUpPage() {
           onClick={() => {
             navigate({
               from: "/",
-              to: "/login",
+              to: loginRoute.path,
             });
           }}
         />
@@ -145,10 +147,6 @@ function SignUpPage() {
             isSelected={selection === 0}
             onSelection={() => {
               setSelection(0);
-              providerFormRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
             }}
             style={{ marginTop: "20px" }}
             headerLabel="Service Provider"
@@ -178,8 +176,10 @@ function SignUpPage() {
             <AccountFeature label="Manage all your service needs in one place" />
           </Card>
         </div>
-        <ProviderForm ref={providerFormRef} className="mt-10" />
+        {selection === 0 && <ProviderForm className="mt-10" />}
+        {selection === 1 && <CustomerForm className="mt-10" />}
       </div>
+      <span className="h-15" />
       <Footer children={<FooterContent />} />
     </div>
   );

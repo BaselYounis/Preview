@@ -1,9 +1,18 @@
 
 
 export function phoneNumberValidator(phoneNumber: string): { success: boolean; message: string } {
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/; // E.164 format
-    if (!phoneRegex.test(phoneNumber)) {
-        return { success: false, message: "Invalid phone number format." };
+    // Egyptian phone numbers:
+    // - Can start with +20 (international format)
+    // - Can start with 00 or 0 (local format)
+    // - Followed by 10 or 11 (mobile operators)
+    // - Total digits: 11 for local format (0 + 10 digits) or 12-13 for international format
+    const egyptPhoneRegex = /^(\+20|0020|0)(10|11|12|15)\d{8}$/;
+    
+    if (!egyptPhoneRegex.test(phoneNumber)) {
+        return { 
+            success: false, 
+            message: "Invalid Egyptian phone number. Use format: 01XXXXXXXXX or +201XXXXXXXXX" 
+        };
     }
     return { success: true, message: "Phone number is valid." };
 }
@@ -30,6 +39,25 @@ export function passwordValidator(password: string): { success: boolean; message
     }
     return { success: true, message: "Password is valid." };
 }
+
+
+export function confirmPasswordValidator(password: string, confirmPassword: string): { success: boolean; message: string } {
+    // First validate the password itself
+    const passwordValidation = passwordValidator(password);
+    if (!passwordValidation.success) {
+        return passwordValidation;
+    }
+    
+    // Then check if passwords match
+    if (password !== confirmPassword) {
+        return { success: false, message: "Passwords do not match." };
+    }
+    return { success: true, message: "Passwords match." };
+}
+
+
+
+
 
 export function nameValidator(name: string): { success: boolean; message: string } {
     if (name.length < 2) {

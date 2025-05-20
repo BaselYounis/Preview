@@ -1,15 +1,26 @@
 import type { CSSProperties } from "@mui/material";
-import { useState, type FunctionComponent } from "react";
+import { useEffect, useRef, useState, type FunctionComponent } from "react";
 import TextField from "../../../GeneralComponents/TextField";
 import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
 import {
+  confirmPasswordValidator,
   emailValidator,
   nameValidator,
   passwordValidator,
   phoneNumberValidator,
 } from "../ClientSide/ValidateForm";
-import { GeneralTextCleaner } from "../ClientSide/CleanForm";
+import {
+  GeneralTextCleaner,
+  NameCleaner,
+  PhoneNumberCleaner,
+} from "../ClientSide/CleanForm";
+import { useNavigate } from "@tanstack/react-router";
+import { API, SendToBackend } from "../../../API/Communication";
+import { ProviderURLManager } from "../../../API/BackendModules/ServiceProivder";
+import { Route as loginRoute } from "../../../routes/login";
+import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
+
 interface ProviderFormProps {
   className?: string;
   style?: CSSProperties;
@@ -22,7 +33,7 @@ type ProviderFormInputs = {
   password: string;
   phone_number: string;
   confirm_password: string;
-  whatsapp_number?: string;
+  whatsapp_number: string;
 };
 
 const ProviderForm: FunctionComponent<ProviderFormProps> = ({
@@ -40,12 +51,44 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
     password: "",
     confirm_password: "",
     phone_number: "",
+    whatsapp_number: "",
   });
+
+  const [backendErrorMessage, setBackendErrorMessage] = useState<string | null>(
+    null
+  );
+  const providerFormRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    providerFormRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, []);
+
+  const onCreateAccountClicked = () => {
+    SendToBackend({
+      api: API,
+      url: ProviderURLManager.getURL("Create/"),
+      data: formData,
+      method: "POST",
+    }).then((response) => {
+      if (response.success) {
+        console.log(response.data);
+        navigate({
+          from: "/",
+          to: loginRoute.path,
+        });
+      } else {
+        setBackendErrorMessage(response.message ?? "Unknown Error");
+      }
+    });
+  };
 
   return (
     <div
-      ref={props.ref}
-      className={`flex flex-col w-150 h-fit bg-white border-1 gap-y-5
+      ref={providerFormRef}
+      className={`flex flex-col w-150 h-fit bg-white border-1 gap-y-5 
          border-gray-200 rounded-[10px] px-6 py-8 text-xl ${props.className}`}
       style={baseStyle}
     >
@@ -65,7 +108,7 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           setValue={(value) =>
             setFormData((prev) => ({ ...prev, first_name: value }))
           }
-          inputCleaner={GeneralTextCleaner}
+          inputCleaner={NameCleaner}
           inputValidator={nameValidator}
         />
         <TextField
@@ -77,7 +120,7 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           setValue={(value) =>
             setFormData((prev) => ({ ...prev, last_name: value }))
           }
-          inputCleaner={GeneralTextCleaner}
+          inputCleaner={NameCleaner}
           inputValidator={nameValidator}
         />
       </div>
@@ -117,26 +160,31 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           setFormData((prev) => ({ ...prev, confirm_password: value }))
         }
         inputCleaner={GeneralTextCleaner}
-        inputValidator={passwordValidator}
+        inputValidator={(value) =>
+          confirmPasswordValidator(formData.password, value)
+        }
       />
 
       <TextField
         style={{ width: "100%" }}
         label="Phone Number"
-        placeholder="123-456-7890"
+        placeholder="Phone Number"
         value={formData.phone_number}
         setValue={(value) =>
           setFormData((prev) => ({ ...prev, phone_number: value }))
         }
+        inputCleaner={PhoneNumberCleaner}
+        inputValidator={phoneNumberValidator}
       />
       <TextField
         style={{ width: "100%" }}
         label="WhatsApp Number"
-        placeholder="123-456-7890"
-        value={formData.phone_number}
+        placeholder="WhatsApp Number"
+        value={formData.whatsapp_number}
         setValue={(value) =>
-          setFormData((prev) => ({ ...prev, phone_number: value }))
+          setFormData((prev) => ({ ...prev, whatsapp_number: value }))
         }
+        inputCleaner={PhoneNumberCleaner}
         inputValidator={phoneNumberValidator}
       />
       <Button
@@ -151,7 +199,33 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           borderRadius: "10px",
         }}
         label="Create Account"
+        onClick={() => {
+          onCreateAccountClicked();
+        }}
       />
+      <div
+        className="text-[13px] text-gray-500 flex flex-row gap-x-2 mx-auto"
+        style={{ fontFamily: "Poppins" }}
+      >
+        <p>Already have an account?</p>
+        <p
+          className="hover:text-primary-dark hover:underline cursor-pointer transition-all duration-200"
+          onClick={() => {
+            navigate({
+              from: "/",
+              to: loginRoute.path,
+            });
+          }}
+        >
+          Log In
+        </p>
+      </div>
+      {backendErrorMessage && (
+        <ErrorComponent
+          errorMessage={backendErrorMessage}
+          className="mx-auto"
+        />
+      )}
     </div>
   );
 };
