@@ -9,12 +9,12 @@ import {
   nameValidator,
   passwordValidator,
   phoneNumberValidator,
-} from "../ClientSide/ValidateForm";
+} from "../../../ClientSide/ValidateForm";
 import {
   GeneralTextCleaner,
   NameCleaner,
   PhoneNumberCleaner,
-} from "../ClientSide/CleanForm";
+} from "../../../ClientSide/CleanForm";
 import { useNavigate } from "@tanstack/react-router";
 import { HitBackend } from "../../../API/Communication";
 

@@ -7,11 +7,11 @@ import Footer from "../../GeneralComponents/Footer";
 import FooterContent from "../LoginPage/Components/FooterContent";
 import type { CSSProperties } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { HitAuthBackend } from "../../API/Communication";
 import { UserAPI } from "../../API/BackendModules/User";
 import { useEffect, useState } from "react";
-import LoadingComponent from "../../GeneralComponents/LoadingComponent";
+import VerificationCodeField from "./Components/VerificationCodeField";
 
 async function getUserEmail() {
   const url = UserAPI.URLManager.getURL("Read/", "Current/");
@@ -21,35 +21,22 @@ async function getUserEmail() {
 }
 function ActivateAccountPage() {
   const [email, setEmail] = useState<string | null>(null);
+  const [verificationCode, setVerificationCode] = useState<string>("");
+
   const fetchEmail = async () => {
     const userEmail = await getUserEmail();
     setEmail(userEmail);
   };
+
   useEffect(() => {
     fetchEmail();
   }, []);
 
   const navigate = useNavigate();
-  const formStyle: CSSProperties = {
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-  };
+
   return (
     <div className="flex flex-col h-screen">
-      <Header>
-        <Button
-          style={{ marginLeft: "auto", marginRight: "2rem" }}
-          sizeFactor={0.8}
-          backgroundColor={theme.colors.primaryDark()}
-          onHoverColor={theme.colors.primaryLight()}
-          textColor={"white"}
-          onClick={() => {
-            navigate({
-              from: "/",
-              to: loginRoute.path,
-            });
-          }}
-        />
-      </Header>
+      <Header></Header>
 
       <div
         className="flex flex-col h-[550px] w-[490px] bg-white rounded-[10px] border-1 border-gray-200 mx-auto mt-35 p-4 py-8 gap-y-4 items-center"
@@ -72,8 +59,46 @@ function ActivateAccountPage() {
             {email || "Loading..."}
           </p>
         </div>
+        <p className="font-[Poppins] font-[400] text-xs text-gray-800 mt-4">
+          Enter the 6-digit verification code
+        </p>
+        <VerificationCodeField
+          verificationCode={verificationCode}
+          setVerificationCode={setVerificationCode}
+        />
+        <Button
+          label="Verify Account"
+          backgroundColor={theme.colors.primaryLight()}
+          onHoverColor={theme.colors.primaryLighter()}
+          textColor="white"
+          style={{
+            width: "100%",
+            fontSize: "16px",
+            height: "50px",
+            borderRadius: "10px",
+            marginTop: "20px",
+          }}
+        />
+        <div className="flex flex-row gap-x-1 text-[14px] text-gray-600">
+          <p>Didn't receive a code?</p>
+          <p className="cursor-pointer underline">Resend Code</p>
+        </div>
       </div>
-<LoadingComponent />
+      <div
+        className="flex-col bg-[#eff6ff] w-[490px] border-1 rounded-[10px] p-4
+       border-[#dbeafe] mx-auto my-10"
+      >
+        <div className="flex flex-row  gap-x-2">
+          <FontAwesomeIcon className="text-[#3b82f6] mt-1" icon={faInfoCircle} />
+          <div className="flex flex-col gap-y-2">
+            <p className="text-blue-700">What happens next?</p>
+            <p className="text-blue-600">
+              After verifying your email, you'll be able to complete your
+              profile setup and start using XPerdiem's services right away.
+            </p>
+          </div>
+        </div>
+      </div>
       <Footer>
         <FooterContent />
       </Footer>
@@ -82,3 +107,6 @@ function ActivateAccountPage() {
 }
 
 export default ActivateAccountPage;
+const formStyle: CSSProperties = {
+  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+};

@@ -14,6 +14,9 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   inputCleaner?: (value: string) => string;
   inputValidator?: (value: string) => { success: boolean; message: string };
   ErrorComp?: React.ComponentType<ErrorComponentProps>;
+  textAlign?: "left" | "center" | "right";
+  ref?: React.Ref<HTMLInputElement>;
+  outline?: boolean;
 }
 
 const TextField: FunctionComponent<TextFieldProps> = ({
@@ -36,9 +39,9 @@ const TextField: FunctionComponent<TextFieldProps> = ({
     width: `${widthFactor * sizeFactor * 20}rem`,
     height: `${heightFactor * sizeFactor * 3}rem`,
     fontSize: `${fontFactor * sizeFactor}rem`,
-    boxShadow: isHovered ? `0px 0px 4px ${shadowColor}` : "none",
+    boxShadow: isHovered || props.outline ? `0px 0px 4px ${shadowColor}` : "none",
     borderRadius: "0.5rem",
-    border: isHovered
+    border: isHovered || props.outline
       ? `1px solid ${theme.colors.primaryLight()}`
       : "1px solid #ccc",
     ...props.style,
@@ -73,15 +76,18 @@ const TextField: FunctionComponent<TextFieldProps> = ({
 
             props.setValue(e.target.value);
           }}
-          placeholder={props.placeholder || "Enter text here..."}
+          placeholder={props.placeholder}
           style={{
             width: "100%",
             height: "100%",
             border: "none",
             outline: "none",
             fontSize: `${sizeFactor * fontFactor}rem`,
+            textAlign: props.textAlign || "left",
           }}
           className="bg-white"
+          ref={props.ref}
+      
         />
       </div>
       {allowValidation &&

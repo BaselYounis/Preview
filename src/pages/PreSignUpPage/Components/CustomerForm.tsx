@@ -8,8 +8,8 @@ import {
   emailValidator,
   nameValidator,
   passwordValidator,
-} from "../ClientSide/ValidateForm";
-import { GeneralTextCleaner, NameCleaner } from "../ClientSide/CleanForm";
+} from "../../../ClientSide/ValidateForm";
+import { GeneralTextCleaner, NameCleaner } from "../../../ClientSide/CleanForm";
 import { useNavigate } from "@tanstack/react-router";
 
 function onCreateAccountClicked() {}

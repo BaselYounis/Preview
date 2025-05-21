@@ -19,6 +19,13 @@ const Button: FunctionComponent<ButtonProps> = ({
   heightFactor = 1,
   ...props
 }) => {
+  const changeScaleWhenClicked = () => {
+    setScale(0.95);
+    setTimeout(() => {
+      setScale(1);
+    }, 200);
+  };
+  const [scale, setScale] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const baseStyle: CSSProperties = {
     padding: `${sizeFactor * 10}px`,
@@ -38,7 +45,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         : props.textColor || "#000000",
     fontFamily: "sans-serif",
     fontWeight: "400",
-
+    scale: `${scale}`,
     width: `${widthFactor * 75}px`,
     height: `${heightFactor * 40}px`,
     fontSize: `${sizeFactor * 18}px`,
@@ -47,7 +54,10 @@ const Button: FunctionComponent<ButtonProps> = ({
   return (
     <div
       style={baseStyle}
-      onClick={props.onClick}
+      onClick={() => {
+        changeScaleWhenClicked();
+        props.onClick?.();
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="transition-all duration-300 ease-in-out"
