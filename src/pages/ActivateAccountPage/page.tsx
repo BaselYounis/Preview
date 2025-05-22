@@ -2,7 +2,6 @@ import Header from "../../GeneralComponents/Header";
 import { theme } from "../../Constants/Colors";
 import Button from "../../GeneralComponents/Button";
 import { useNavigate } from "@tanstack/react-router";
-import { Route as loginRoute } from "../../routes/login";
 import Footer from "../../GeneralComponents/Footer";
 import FooterContent from "../LoginPage/Components/FooterContent";
 import type { CSSProperties } from "@mui/material";
@@ -12,7 +11,9 @@ import { HitAuthBackend } from "../../API/Communication";
 import { UserAPI } from "../../API/BackendModules/User";
 import { useEffect, useState } from "react";
 import VerificationCodeField from "./Components/VerificationCodeField";
-
+import { Route as dashboardRoute } from "../../routes/dashboard";
+import ErrorComponent from "../../GeneralComponents/ErrorComponent";
+import DoneComponent from "../../GeneralComponents/DoneComponent";
 async function getUserEmail() {
   const url = UserAPI.URLManager.getURL("Read/", "Current/");
   const response = (await HitAuthBackend({ url, method: "GET" })).data;
@@ -21,15 +22,45 @@ async function getUserEmail() {
 }
 function ActivateAccountPage() {
   const [email, setEmail] = useState<string | null>(null);
+  const [isVerified, setVerified] = useState<boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>("");
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [doneMessage, setDoneMessage] = useState<string | null>(null);
   const fetchEmail = async () => {
     const userEmail = await getUserEmail();
     setEmail(userEmail);
   };
+  const askForVerificationCode = async () => {
+    const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");
+    const response = await HitAuthBackend({ url, method: "GET" });
+    console.log(response); // for debugging reasons...
+  };
+
+  const verifyAccount = async () => {
+    const url = UserAPI.URLManager.getURL("Update/", "Activate/");
+    const response = await HitAuthBackend({
+      url,
+      method: "PUT",
+      data: { activation_code: verificationCode },
+    });
+    if (response.success) {
+      setVerified(true);
+      if (response.message) setDoneMessage(response.message);
+
+      setTimeout(() => {
+        navigate({ from: "/", to: dashboardRoute.path });
+      }, 1000);
+    } else {
+      if (response.message) setErrorMessage(response.message);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     fetchEmail();
+    askForVerificationCode();
   }, []);
 
   const navigate = useNavigate();
@@ -66,19 +97,19 @@ function ActivateAccountPage() {
           verificationCode={verificationCode}
           setVerificationCode={setVerificationCode}
         />
+
         <Button
           label="Verify Account"
           backgroundColor={theme.colors.primaryLight()}
           onHoverColor={theme.colors.primaryLighter()}
           textColor="white"
-          style={{
-            width: "100%",
-            fontSize: "16px",
-            height: "50px",
-            borderRadius: "10px",
-            marginTop: "20px",
-          }}
+          style={buttonStyle}
+          onClick={verifyAccount}
         />
+
+        {isVerified && <DoneComponent message={doneMessage || ""} />}
+
+        {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
         <div className="flex flex-row gap-x-1 text-[14px] text-gray-600">
           <p>Didn't receive a code?</p>
           <p className="cursor-pointer underline">Resend Code</p>
@@ -89,7 +120,10 @@ function ActivateAccountPage() {
        border-[#dbeafe] mx-auto my-10"
       >
         <div className="flex flex-row  gap-x-2">
-          <FontAwesomeIcon className="text-[#3b82f6] mt-1" icon={faInfoCircle} />
+          <FontAwesomeIcon
+            className="text-[#3b82f6] mt-1"
+            icon={faInfoCircle}
+          />
           <div className="flex flex-col gap-y-2">
             <p className="text-blue-700">What happens next?</p>
             <p className="text-blue-600">
@@ -109,4 +143,11 @@ function ActivateAccountPage() {
 export default ActivateAccountPage;
 const formStyle: CSSProperties = {
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+};
+const buttonStyle: CSSProperties = {
+  width: "100%",
+  fontSize: "16px",
+  height: "50px",
+  borderRadius: "10px",
+  marginTop: "20px",
 };
