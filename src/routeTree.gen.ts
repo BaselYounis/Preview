@@ -17,6 +17,9 @@ import { Route as LoginImport } from './routes/login'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as ActivateAccountImport } from './routes/activate-account'
 import { Route as IndexImport } from './routes/index'
+import { Route as PasswordResetCodeIndexImport } from './routes/password-reset-code/index'
+import { Route as PasswordResetCodeVerifyImport } from './routes/password-reset-code/verify'
+import { Route as PasswordResetCodeSuccessImport } from './routes/password-reset-code/success'
 
 // Create/Update Routes
 
@@ -53,6 +56,24 @@ const ActivateAccountRoute = ActivateAccountImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PasswordResetCodeIndexRoute = PasswordResetCodeIndexImport.update({
+  id: '/password-reset-code/',
+  path: '/password-reset-code/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PasswordResetCodeVerifyRoute = PasswordResetCodeVerifyImport.update({
+  id: '/password-reset-code/verify',
+  path: '/password-reset-code/verify',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PasswordResetCodeSuccessRoute = PasswordResetCodeSuccessImport.update({
+  id: '/password-reset-code/success',
+  path: '/password-reset-code/success',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,6 +123,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
+    '/password-reset-code/success': {
+      id: '/password-reset-code/success'
+      path: '/password-reset-code/success'
+      fullPath: '/password-reset-code/success'
+      preLoaderRoute: typeof PasswordResetCodeSuccessImport
+      parentRoute: typeof rootRoute
+    }
+    '/password-reset-code/verify': {
+      id: '/password-reset-code/verify'
+      path: '/password-reset-code/verify'
+      fullPath: '/password-reset-code/verify'
+      preLoaderRoute: typeof PasswordResetCodeVerifyImport
+      parentRoute: typeof rootRoute
+    }
+    '/password-reset-code/': {
+      id: '/password-reset-code/'
+      path: '/password-reset-code'
+      fullPath: '/password-reset-code'
+      preLoaderRoute: typeof PasswordResetCodeIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -114,6 +156,9 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/login-redirector': typeof LoginRedirectorRoute
   '/signup': typeof SignupRoute
+  '/password-reset-code/success': typeof PasswordResetCodeSuccessRoute
+  '/password-reset-code/verify': typeof PasswordResetCodeVerifyRoute
+  '/password-reset-code': typeof PasswordResetCodeIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -123,6 +168,9 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/login-redirector': typeof LoginRedirectorRoute
   '/signup': typeof SignupRoute
+  '/password-reset-code/success': typeof PasswordResetCodeSuccessRoute
+  '/password-reset-code/verify': typeof PasswordResetCodeVerifyRoute
+  '/password-reset-code': typeof PasswordResetCodeIndexRoute
 }
 
 export interface FileRoutesById {
@@ -133,6 +181,9 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/login-redirector': typeof LoginRedirectorRoute
   '/signup': typeof SignupRoute
+  '/password-reset-code/success': typeof PasswordResetCodeSuccessRoute
+  '/password-reset-code/verify': typeof PasswordResetCodeVerifyRoute
+  '/password-reset-code/': typeof PasswordResetCodeIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -144,6 +195,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/login-redirector'
     | '/signup'
+    | '/password-reset-code/success'
+    | '/password-reset-code/verify'
+    | '/password-reset-code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -152,6 +206,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/login-redirector'
     | '/signup'
+    | '/password-reset-code/success'
+    | '/password-reset-code/verify'
+    | '/password-reset-code'
   id:
     | '__root__'
     | '/'
@@ -160,6 +217,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/login-redirector'
     | '/signup'
+    | '/password-reset-code/success'
+    | '/password-reset-code/verify'
+    | '/password-reset-code/'
   fileRoutesById: FileRoutesById
 }
 
@@ -170,6 +230,9 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   LoginRedirectorRoute: typeof LoginRedirectorRoute
   SignupRoute: typeof SignupRoute
+  PasswordResetCodeSuccessRoute: typeof PasswordResetCodeSuccessRoute
+  PasswordResetCodeVerifyRoute: typeof PasswordResetCodeVerifyRoute
+  PasswordResetCodeIndexRoute: typeof PasswordResetCodeIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -179,6 +242,9 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   LoginRedirectorRoute: LoginRedirectorRoute,
   SignupRoute: SignupRoute,
+  PasswordResetCodeSuccessRoute: PasswordResetCodeSuccessRoute,
+  PasswordResetCodeVerifyRoute: PasswordResetCodeVerifyRoute,
+  PasswordResetCodeIndexRoute: PasswordResetCodeIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -196,7 +262,10 @@ export const routeTree = rootRoute
         "/dashboard",
         "/login",
         "/login-redirector",
-        "/signup"
+        "/signup",
+        "/password-reset-code/success",
+        "/password-reset-code/verify",
+        "/password-reset-code/"
       ]
     },
     "/": {
@@ -216,6 +285,15 @@ export const routeTree = rootRoute
     },
     "/signup": {
       "filePath": "signup.tsx"
+    },
+    "/password-reset-code/success": {
+      "filePath": "password-reset-code/success.tsx"
+    },
+    "/password-reset-code/verify": {
+      "filePath": "password-reset-code/verify.tsx"
+    },
+    "/password-reset-code/": {
+      "filePath": "password-reset-code/index.tsx"
     }
   }
 }

@@ -10,6 +10,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { UserAPI } from "../../../API/BackendModules/User";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 import { Route as loginRedirectorRoute } from "../../../routes/login-redirector";
+import { Route as resetPasswordCodePageRoute } from "../../../routes/password-reset-code";
 type LoginForm = {
   email: string;
   password: string;
@@ -23,8 +24,6 @@ function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
     // Ensure we're navigating to the root preSignUp path
   });
 }
-
-function onForgotPasswordButtonClicked() {}
 
 function LoginCard() {
   const baseStyle: CSSProperties = {
@@ -40,15 +39,27 @@ function LoginCard() {
   });
   const onLoginButtonClicked = async () => {
     const loginResponse = await UserAPI.Login(form.email, form.password);
+    console.log("RESPONSE RESPONSE!");
+    console.log(loginResponse);
     if (!loginResponse.success) {
       setErrorMessage(loginResponse.message || "Login failed");
       return;
+    } else {
+      console.log("Login successful");
+      navigate({
+        from: root.path,
+        to: loginRedirectorRoute.path,
+      });
     }
+  };
+
+  const onForgotPasswordButtonClicked = () => {
     navigate({
       from: root.path,
-      to: loginRedirectorRoute.path,
+      to: resetPasswordCodePageRoute.path,
     });
   };
+
   const navigate = useNavigate();
   return (
     <div className="flex flex-col w-full h-fit justify-center items-center mt-45 ">

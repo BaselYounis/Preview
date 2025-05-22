@@ -85,11 +85,11 @@ export async function SendToBackend(api:AxiosInstance,{ url, data, method = "POS
         if (method === "POST") {
             response = await api.post(url, data);
         } else if (method === "GET") {
-            response = await api.get(url);
+            response = await api.get(url, { params: data });
         } else if (method === "PUT") {
             response = await api.put(url, data);
         } else if (method === "DELETE") {
-            response = await api.delete(url);
+            response = await api.delete(url, { params: data });
         } else {
             throw new Error("Invalid method");
         }

@@ -32,10 +32,13 @@ function ActivateAccountPage() {
   };
   const askForVerificationCode = async () => {
     const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");
-    const response = await HitAuthBackend({ url, method: "GET" });
-    console.log(response); // for debugging reasons...
+    await HitAuthBackend({ url, method: "GET" });
+    // console.log(response); // for debugging reasons...
   };
-
+  const onResendCodeClcicked = async () => {
+    const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");
+    await HitAuthBackend({ url, method: "GET" });
+  };
   const verifyAccount = async () => {
     const url = UserAPI.URLManager.getURL("Update/", "Activate/");
     const response = await HitAuthBackend({
@@ -112,7 +115,12 @@ function ActivateAccountPage() {
         {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
         <div className="flex flex-row gap-x-1 text-[14px] text-gray-600">
           <p>Didn't receive a code?</p>
-          <p className="cursor-pointer underline">Resend Code</p>
+          <p
+            className="cursor-pointer underline"
+            onClick={onResendCodeClcicked}
+          >
+            Resend Code
+          </p>
         </div>
       </div>
       <div
