@@ -18,7 +18,6 @@ function PasswordResetCodePage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const askForPasswordResetCode = async () => {
     const url = UserAPI.URLManager.getURL("Read/", "PasswordResetCode/");
     const response = await HitBackend({
@@ -27,10 +26,27 @@ function PasswordResetCodePage() {
       data: { email: email },
     });
     if (response.success) {
+      // Method 1: Using search parameters (query string)
       navigate({
         from: "/",
         to: verifyCodeRoute.path,
+        search: {
+          email: email,
+        },
       });
+
+      /* 
+      // Method 3: Using state (uncomment to use this method instead)
+      navigate({
+        from: "/",
+        to: verifyCodeRoute.path,
+        state: {
+          email: email,
+          timestamp: new Date().toString(),
+          // Any other data you want to pass
+        }
+      });
+      */
     } else {
       if (response.message) {
         console.log(response.message);
