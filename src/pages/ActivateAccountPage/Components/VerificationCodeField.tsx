@@ -42,6 +42,7 @@ const DigitField: FunctionComponent<DigitFieldProps> = ({
       autoFocus={focus}
       ref={inputRef}
       outline={outline}
+
     />
   );
 };
@@ -55,6 +56,7 @@ const VerificationCodeField: FunctionComponent<VerificationCodeFieldProps> = ({
   verificationCode,
   setVerificationCode,
 }) => {
+  const [firstHover, setFirstHover] = useState(true);
   const inputRef1 = useRef<HTMLInputElement>(null);
   const inputRef2 = useRef<HTMLInputElement>(null);
   const inputRef3 = useRef<HTMLInputElement>(null);
@@ -63,7 +65,14 @@ const VerificationCodeField: FunctionComponent<VerificationCodeFieldProps> = ({
   const inputRef6 = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="flex flex-row gap-x-2 w-full">
+    <div
+      className="flex flex-row gap-x-2 w-full"
+      onMouseEnter={() => {
+        if (!firstHover) return;
+        setVerificationCode("");
+        setFirstHover(false);
+      }}
+    >
       <DigitField
         digit={verificationCode[0] || ""}
         setDigit={(digit) => {

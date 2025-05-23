@@ -46,6 +46,19 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
     boxShadow: "0px 0px 4px rgba(50, 50, 50, 0.1)",
     ...style,
   };
+  const [errors, setErrors] = useState<boolean[]>(Array(7).fill(false));
+
+  // Example function to update a single index
+  const updateError = (index: number, value: boolean) => {
+    setErrors((prevErrors) => {
+      const newErrors = [...prevErrors];
+      newErrors[index] = value;
+      return newErrors;
+    });
+  };
+  const isThereAFormError = () => {
+    return errors.some((error) => error === true);
+  };
   const [formData, setFormData] = useState<ProviderFormInputs>({
     first_name: "",
     last_name: "",
@@ -71,6 +84,11 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
   const onCreateAccountClicked = async () => {
     try {
       // Attempt to create service provider account
+
+      if (isThereAFormError()) {
+        setBackendErrorMessage("Please fix the errors in the form");
+        return;
+      }
       const createResponse = await HitBackend({
         url: ServiceProviderAPI.URLManager.getURL("Create/"),
         data: formData,
@@ -133,6 +151,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           }
           inputCleaner={NameCleaner}
           inputValidator={nameValidator}
+          errorIndicator={errors[0]}
+          setErrorIndicator={(arg: boolean) => {
+            updateError(0, arg);
+          }}
         />
         <TextField
           style={{ width: "100%" }}
@@ -145,6 +167,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           }
           inputCleaner={NameCleaner}
           inputValidator={nameValidator}
+          errorIndicator={errors[1]}
+          setErrorIndicator={(arg: boolean) => {
+            updateError(1, arg);
+          }}
         />
       </div>
       <TextField
@@ -155,6 +181,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         setValue={(value) => setFormData((prev) => ({ ...prev, email: value }))}
         inputCleaner={GeneralTextCleaner}
         inputValidator={emailValidator}
+        errorIndicator={errors[2]}
+        setErrorIndicator={(arg: boolean) => {
+          updateError(2, arg);
+        }}
       />
       <div>
         <TextField
@@ -168,6 +198,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           }
           inputCleaner={GeneralTextCleaner}
           inputValidator={passwordValidator}
+          errorIndicator={errors[3]}
+          setErrorIndicator={(arg: boolean) => {
+            updateError(3, arg);
+          }}
         />
         <p className="text-xs text-gray-500">
           Must be at least 8 characters with numbers and special characters
@@ -186,6 +220,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         inputValidator={(value) =>
           confirmPasswordValidator(formData.password, value)
         }
+        errorIndicator={errors[4]}
+        setErrorIndicator={(arg: boolean) => {
+          updateError(4, arg);
+        }}
       />
 
       <TextField
@@ -198,6 +236,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         }
         inputCleaner={PhoneNumberCleaner}
         inputValidator={phoneNumberValidator}
+        errorIndicator={errors[5]}
+        setErrorIndicator={(arg: boolean) => {
+          updateError(5, arg);
+        }}
       />
       <TextField
         style={{ width: "100%" }}
@@ -209,6 +251,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         }
         inputCleaner={PhoneNumberCleaner}
         inputValidator={phoneNumberValidator}
+        errorIndicator={errors[6]}
+        setErrorIndicator={(arg: boolean) => {
+          updateError(6, arg);
+        }}
       />
       <Button
         textColor="white"

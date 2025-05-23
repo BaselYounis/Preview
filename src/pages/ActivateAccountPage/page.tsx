@@ -22,7 +22,7 @@ async function getUserEmail() {
 }
 function ActivateAccountPage() {
   const [email, setEmail] = useState<string | null>(null);
-  const [isVerified, setVerified] = useState<boolean>(false);
+ 
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [doneMessage, setDoneMessage] = useState<string | null>(null);
@@ -33,11 +33,16 @@ function ActivateAccountPage() {
   const askForVerificationCode = async () => {
     const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");
     await HitAuthBackend({ url, method: "GET" });
-    // console.log(response); // for debugging reasons...
+    
   };
   const onResendCodeClcicked = async () => {
     const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");
-    await HitAuthBackend({ url, method: "GET" });
+    const response = await HitAuthBackend({ url, method: "GET" });
+    if (response.success) {
+      setDoneMessage("Verification code resent successfully.");
+    } else {
+      if (response.message) setErrorMessage(response.message);
+    }
   };
   const verifyAccount = async () => {
     const url = UserAPI.URLManager.getURL("Update/", "Activate/");
@@ -47,7 +52,7 @@ function ActivateAccountPage() {
       data: { activation_code: verificationCode },
     });
     if (response.success) {
-      setVerified(true);
+      setDoneMessage("Account activated successfully.");
       if (response.message) setDoneMessage(response.message);
 
       setTimeout(() => {
@@ -110,7 +115,7 @@ function ActivateAccountPage() {
           onClick={verifyAccount}
         />
 
-        {isVerified && <DoneComponent message={doneMessage || ""} />}
+        {doneMessage && <DoneComponent message={doneMessage || ""} />}
 
         {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
         <div className="flex flex-row gap-x-1 text-[14px] text-gray-600">

@@ -17,6 +17,8 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   textAlign?: "left" | "center" | "right";
   ref?: React.Ref<HTMLInputElement>;
   outline?: boolean;
+  errorIndicator?: boolean;
+  setErrorIndicator?: (value: boolean) => void;
 }
 
 const TextField: FunctionComponent<TextFieldProps> = ({
@@ -25,6 +27,17 @@ const TextField: FunctionComponent<TextFieldProps> = ({
   heightFactor = 1,
   fontFactor = 1,
   ErrorComp = ErrorComponent,
+  value,
+  setValue,
+  outline,
+  inputCleaner,
+  inputValidator,
+  setErrorIndicator,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  errorIndicator,
+
+  textAlign,
+
   ...props
 }) => {
   const [isHovered, setHovered] = useState(false);
@@ -39,11 +52,12 @@ const TextField: FunctionComponent<TextFieldProps> = ({
     width: `${widthFactor * sizeFactor * 20}rem`,
     height: `${heightFactor * sizeFactor * 3}rem`,
     fontSize: `${fontFactor * sizeFactor}rem`,
-    boxShadow: isHovered || props.outline ? `0px 0px 4px ${shadowColor}` : "none",
+    boxShadow: isHovered || outline ? `0px 0px 4px ${shadowColor}` : "none",
     borderRadius: "0.5rem",
-    border: isHovered || props.outline
-      ? `1px solid ${theme.colors.primaryLight()}`
-      : "1px solid #ccc",
+    border:
+      isHovered || outline
+        ? `1px solid ${theme.colors.primaryLight()}`
+        : "1px solid #ccc",
     ...props.style,
   };
   return (
@@ -67,14 +81,16 @@ const TextField: FunctionComponent<TextFieldProps> = ({
       >
         <input
           {...props}
-          value={props.value}
+          value={value}
           onChange={(e) => {
             props.onChange?.(e);
             setAllowValidation(true);
-            if (props.inputCleaner)
-              e.target.value = props.inputCleaner(e.target.value);
+            if (inputCleaner) e.target.value = inputCleaner(e.target.value);
+            if (inputValidator)
+              if (setErrorIndicator)
+                setErrorIndicator(!inputValidator(e.target.value).success);
 
-            props.setValue(e.target.value);
+            setValue(e.target.value);
           }}
           placeholder={props.placeholder}
           style={{
@@ -83,19 +99,17 @@ const TextField: FunctionComponent<TextFieldProps> = ({
             border: "none",
             outline: "none",
             fontSize: `${sizeFactor * fontFactor}rem`,
-            textAlign: props.textAlign || "left",
+            textAlign: textAlign || "left",
           }}
           className="bg-white"
           ref={props.ref}
-      
+          autoComplete="new-password"  //tricks browsers to not save the password
         />
       </div>
       {allowValidation &&
-        props.inputValidator &&
-        !props.inputValidator(props.value).success &&
-        ErrorComp && (
-          <ErrorComp errorMessage={props.inputValidator(props.value).message} />
-        )}
+        inputValidator &&
+        !inputValidator(value).success &&
+        ErrorComp && <ErrorComp errorMessage={inputValidator(value).message} />}
     </div>
   );
 };
