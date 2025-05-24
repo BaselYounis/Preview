@@ -100,8 +100,15 @@ export async function SendToBackend(api:AxiosInstance,{ url, data, method = "POS
         if (isAxiosError(error)) {
             const statusCode = error.response?.status;
             if(statusCode){
-                if (statusCode === 401) { //unauthorized
-                    return { success: false, message: "Unauthorized access", data: error.response?.data };
+                if (statusCode === 401) { 
+                    let message:string="";
+                    if (error.response) {
+                        
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    for (const [_, value] of Object.entries(error.response.data)) {
+                        message += `${value}\n`;
+                    }}
+                    return { success: false, message: message, data: error.response?.data };
                 } 
                 else if (statusCode === 400) {
 

@@ -43,6 +43,9 @@ function LoginCard() {
     console.log(loginResponse);
     if (!loginResponse.success) {
       setErrorMessage(loginResponse.message || "Login failed");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 3000);
       return;
     } else {
       console.log("Login successful");

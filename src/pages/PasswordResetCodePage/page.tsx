@@ -91,7 +91,7 @@ function PasswordResetCodePage() {
           </p>
           <div className="flex flex-col items-center">
             <p className="font-[Poppins] font-[400] text-gray-500 mt-2">
-              Enter your email address and we'll send you a link to
+              Enter your email address and we'll send you a code to
             </p>
             <p className="font-[Poppins] font-[400] text-gray-500 ">
               reset your password.

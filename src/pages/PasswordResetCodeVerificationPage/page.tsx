@@ -49,6 +49,9 @@ function PasswordResetCodeVerificationPage() {
     });
     if (response.success) {
       setDoneMessage("Verification code resent successfully.");
+      setTimeout(() => {
+        setDoneMessage(null);
+      }, 3000);
     } else {
       if (response.message) {
         setErrorMessage(response.message);
@@ -81,7 +84,7 @@ function PasswordResetCodeVerificationPage() {
       setDoneMessage("Password reset successfully.");
       setTimeout(() => {
         navigate({ from: "/", to: loginRoute.path });
-      }, 1000);
+      }, 2000);
     } else {
       if (response.message) {
         setErrorMessage(response.message);
