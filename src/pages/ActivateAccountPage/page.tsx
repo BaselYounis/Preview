@@ -11,7 +11,7 @@ import { HitAuthBackend } from "../../API/Communication";
 import { UserAPI } from "../../API/BackendModules/User";
 import { useEffect, useState } from "react";
 import VerificationCodeField from "./Components/VerificationCodeField";
-import { Route as dashboardRoute } from "../../routes/dashboard";
+import { Route as dashboardRoute } from "../../routes/provider-profile";
 import ErrorComponent from "../../GeneralComponents/ErrorComponent";
 import DoneComponent from "../../GeneralComponents/DoneComponent";
 async function getUserEmail() {
@@ -22,7 +22,7 @@ async function getUserEmail() {
 }
 function ActivateAccountPage() {
   const [email, setEmail] = useState<string | null>(null);
- 
+
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [doneMessage, setDoneMessage] = useState<string | null>(null);
@@ -33,7 +33,6 @@ function ActivateAccountPage() {
   const askForVerificationCode = async () => {
     const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");
     await HitAuthBackend({ url, method: "GET" });
-    
   };
   const onResendCodeClcicked = async () => {
     const url = UserAPI.URLManager.getURL("Read/", "ActivationCode/");

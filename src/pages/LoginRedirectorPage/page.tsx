@@ -6,6 +6,7 @@ import LoadingComponent from "../../GeneralComponents/LoadingComponent";
 import ErrorComponent from "../../GeneralComponents/ErrorComponent";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Route as profileRoute } from "../../routes/provider-profile";
 
 function LoginRedirectorPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,7 +39,7 @@ function LoginRedirectorPage() {
           );
           // Wait 2 seconds before redirecting
           setTimeout(() => {
-            navigate({ to: "/dashboard" });
+            navigate({ from: "/", to: profileRoute.path });
           }, 2000);
         } else {
           setStatusMessage("Account needs verification. Redirecting...");

@@ -45,7 +45,7 @@ const DashboardButton: FunctionComponent<DashboardButtonProps> = ({
     >
       <p
         className="mx-auto py-1"
-        style={{ fontSize: `${sizeFactor * fontFactor * 0.875}rem` }}
+        style={{ fontSize: `${sizeFactor * fontFactor * 1}rem` }}
       >
         {label}
       </p>

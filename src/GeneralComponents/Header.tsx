@@ -18,13 +18,15 @@ function Header({ ...props }: HeaderProps) {
       className="flex flex-row text-primary-dark w-full h-fit px-4 py-4"
       style={baseStyle}
     >
-      <div
-        className="text-2xl font-bold ml-50"
-        style={{ fontFamily: "Poppins" }}
-      >
-        XPerdiem
+      <div className="flex flex-row items-center w-[1610px] mx-auto">
+        <div
+          className="text-2xl font-bold"
+          style={{ fontFamily: "Poppins" }}
+        >
+          XPerdiem
+        </div>
+        {props.children}
       </div>
-      {props.children}
     </div>
   );
 }
