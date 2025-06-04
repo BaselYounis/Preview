@@ -21,7 +21,7 @@ import { Route as loginRoute } from "../../../routes/login";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 import { ServiceProviderAPI } from "../../../API/BackendModules/ServiceProivder";
 import { UserAPI } from "../../../API/BackendModules/User";
-import DropdownMenu from "../../../GeneralComponents/DropdownMenu";
+import DropdownMenu from "../../../GeneralComponents/DropDownTemplate";
 
 interface ProviderFormProps {
   className?: string;
