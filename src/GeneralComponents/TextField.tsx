@@ -43,7 +43,7 @@ const TextField: FunctionComponent<TextFieldProps> = ({
   const [isHovered, setHovered] = useState(false);
   const [allowValidation, setAllowValidation] = useState(false);
   const primaryDarkColor = theme.colors.primaryDark();
-  // Convert the primary dark color to rgba format with lower opacity
+
   const shadowColor = primaryDarkColor.startsWith("#")
     ? `rgba(${parseInt(primaryDarkColor.slice(1, 3), 16)}, ${parseInt(primaryDarkColor.slice(3, 5), 16)}, ${parseInt(primaryDarkColor.slice(5, 7), 16)}, 0.3)`
     : primaryDarkColor;

@@ -4,15 +4,14 @@ import TextField from "../../../GeneralComponents/TextField";
 import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
 import {
+  companyNameValidator,
   confirmPasswordValidator,
   emailValidator,
-  nameValidator,
   passwordValidator,
   phoneNumberValidator,
 } from "../../../ClientSide/ValidateForm";
 import {
   GeneralTextCleaner,
-  NameCleaner,
   PhoneNumberCleaner,
 } from "../../../ClientSide/CleanForm";
 import { useNavigate } from "@tanstack/react-router";
@@ -22,6 +21,7 @@ import { Route as loginRoute } from "../../../routes/login";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 import { ServiceProviderAPI } from "../../../API/BackendModules/ServiceProivder";
 import { UserAPI } from "../../../API/BackendModules/User";
+import DropdownMenu from "../../../GeneralComponents/DropdownMenu";
 
 interface ProviderFormProps {
   className?: string;
@@ -29,8 +29,7 @@ interface ProviderFormProps {
   ref?: React.Ref<HTMLDivElement>;
 }
 type ProviderFormInputs = {
-  first_name: string;
-  last_name: string;
+  organization_name: string;
   email: string;
   password: string;
   phone_number: string;
@@ -46,7 +45,7 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
     boxShadow: "0px 0px 4px rgba(50, 50, 50, 0.1)",
     ...style,
   };
-  const [errors, setErrors] = useState<boolean[]>(Array(7).fill(false));
+  const [errors, setErrors] = useState<boolean[]>(Array(6).fill(false));
 
   // Example function to update a single index
   const updateError = (index: number, value: boolean) => {
@@ -60,8 +59,7 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
     return errors.some((error) => error === true);
   };
   const [formData, setFormData] = useState<ProviderFormInputs>({
-    first_name: "",
-    last_name: "",
+    organization_name: "",
     email: "",
     password: "",
     confirm_password: "",
@@ -139,40 +137,22 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
       >
         Create Your Service Provider Account{" "}
       </p>
-      <div className="flex flex-row w-full justify-between gap-4 mt-5">
-        <TextField
-          style={{ width: "100%" }}
-          label="First Name"
-          placeholder="John"
-          className="flex-1"
-          value={formData.first_name}
-          setValue={(value) =>
-            setFormData((prev) => ({ ...prev, first_name: value }))
-          }
-          inputCleaner={NameCleaner}
-          inputValidator={nameValidator}
-          errorIndicator={errors[0]}
-          setErrorIndicator={(arg: boolean) => {
-            updateError(0, arg);
-          }}
-        />
-        <TextField
-          style={{ width: "100%" }}
-          label="Last Name"
-          placeholder="Doe"
-          className="flex-1"
-          value={formData.last_name}
-          setValue={(value) =>
-            setFormData((prev) => ({ ...prev, last_name: value }))
-          }
-          inputCleaner={NameCleaner}
-          inputValidator={nameValidator}
-          errorIndicator={errors[1]}
-          setErrorIndicator={(arg: boolean) => {
-            updateError(1, arg);
-          }}
-        />
-      </div>
+      <TextField
+        style={{ width: "100%" }}
+        label="Organization Name"
+        placeholder="Your Organization Name"
+        value={formData.organization_name}
+        setValue={(value) =>
+          setFormData((prev) => ({ ...prev, organization_name: value }))
+        }
+        inputCleaner={GeneralTextCleaner}
+        inputValidator={companyNameValidator}
+        errorIndicator={errors[0]}
+        setErrorIndicator={(arg: boolean) => {
+          updateError(0, arg);
+        }}
+      />
+
       <TextField
         style={{ width: "100%" }}
         label="Email Address"
@@ -181,9 +161,9 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         setValue={(value) => setFormData((prev) => ({ ...prev, email: value }))}
         inputCleaner={GeneralTextCleaner}
         inputValidator={emailValidator}
-        errorIndicator={errors[2]}
+        errorIndicator={errors[1]}
         setErrorIndicator={(arg: boolean) => {
-          updateError(2, arg);
+          updateError(1, arg);
         }}
       />
       <div>
@@ -198,9 +178,9 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           }
           inputCleaner={GeneralTextCleaner}
           inputValidator={passwordValidator}
-          errorIndicator={errors[3]}
+          errorIndicator={errors[2]}
           setErrorIndicator={(arg: boolean) => {
-            updateError(3, arg);
+            updateError(2, arg);
           }}
         />
         <p className="text-xs text-gray-500">
@@ -220,42 +200,29 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         inputValidator={(value) =>
           confirmPasswordValidator(formData.password, value)
         }
-        errorIndicator={errors[4]}
+        errorIndicator={errors[3]}
         setErrorIndicator={(arg: boolean) => {
-          updateError(4, arg);
+          updateError(3, arg);
         }}
       />
 
       <TextField
         style={{ width: "100%" }}
-        label="Phone Number"
-        placeholder="Phone Number"
+        label="Contact Number"
+        placeholder="Contact Number"
         value={formData.phone_number}
         setValue={(value) =>
           setFormData((prev) => ({ ...prev, phone_number: value }))
         }
         inputCleaner={PhoneNumberCleaner}
         inputValidator={phoneNumberValidator}
-        errorIndicator={errors[5]}
+        errorIndicator={errors[4]}
         setErrorIndicator={(arg: boolean) => {
-          updateError(5, arg);
+          updateError(4, arg);
         }}
       />
-      <TextField
-        style={{ width: "100%" }}
-        label="WhatsApp Number"
-        placeholder="WhatsApp Number"
-        value={formData.whatsapp_number}
-        setValue={(value) =>
-          setFormData((prev) => ({ ...prev, whatsapp_number: value }))
-        }
-        inputCleaner={PhoneNumberCleaner}
-        inputValidator={phoneNumberValidator}
-        errorIndicator={errors[6]}
-        setErrorIndicator={(arg: boolean) => {
-          updateError(6, arg);
-        }}
-      />
+      <DropdownMenu/>
+
       <Button
         textColor="white"
         backgroundColor={theme.colors.primaryDark()}

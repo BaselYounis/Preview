@@ -73,3 +73,27 @@ export function nameValidator(name: string): { success: boolean; message: string
     return { success: true, message: "Name is valid." };
 }
 
+export function companyNameValidator(companyName: string): { success: boolean; message: string } {
+    // Remove leading and trailing whitespace
+    const trimmedName = companyName.trim();
+    
+    if (trimmedName.length < 2) {
+        return { success: false, message: "Company name must be at least 2 characters long." };
+    }
+    
+    // Check if the name contains any alphanumeric characters (not just symbols)
+    if (!/[a-zA-Z0-9]/.test(trimmedName)) {
+        return { success: false, message: "Company name must contain at least one letter or number." };
+    }
+    
+    // Check for invalid characters (optional - adjust as needed)
+    const invalidCharsRegex = /[^\w\s&'(),."-]/;
+    if (invalidCharsRegex.test(trimmedName)) {
+        return { 
+            success: false, 
+            message: "Company name contains invalid characters. Only letters, numbers, spaces, and basic punctuation are allowed." 
+        };
+    }
+    
+    return { success: true, message: "Company name is valid." };
+}
