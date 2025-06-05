@@ -1,7 +1,12 @@
-import type { CSSProperties } from "@mui/material";
-import { useEffect, useState, type FunctionComponent } from "react";
+import {
+  type CSSProperties,
+  useEffect,
+  useState,
+  type FunctionComponent,
+} from "react";
 import { theme } from "../Constants/Colors";
 
+// DropDown Component Props
 interface DropDownComponentProps {
   children?: React.ReactNode;
   style?: CSSProperties;
@@ -10,30 +15,26 @@ interface DropDownComponentProps {
 
 const DropDownComponent: FunctionComponent<DropDownComponentProps> = ({
   children,
-  ...props
+  style,
+  className,
 }) => {
   const [translationOffset, setTranslationOffset] = useState(0);
-  const [opacity, setOpacity] = useState(0);
-  const baseStyle: CSSProperties = {
-    position: "absolute",
-    transform: `translateY(${translationOffset}px)`,
-    opacity: opacity,
-    border: "0.5px solid #ccc",
-    boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.1)",
-    ...props.style,
-  };
 
   useEffect(() => {
     setTranslationOffset(10);
-    setOpacity(1);
   }, []);
 
   return (
     <div>
       <div
         className={`flex flex-col bg-white z-20 transition-all duration-500 ease-in-out 
-          border-0.5 border-[1px] border-gray-200 p-2 ${props.className}`}
-        style={baseStyle}
+          border-[1px] border-gray-200  ${className || ""}`}
+        style={{
+          position: "absolute",
+          transform: `translateY(${translationOffset}px)`,
+          boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.1)",
+          ...style,
+        }}
       >
         {children}
       </div>
@@ -41,6 +42,7 @@ const DropDownComponent: FunctionComponent<DropDownComponentProps> = ({
   );
 };
 
+// DropDown Template Props
 interface DropDownTemplateProps {
   sizeFactor?: number;
   widthFactor?: number;
@@ -48,6 +50,7 @@ interface DropDownTemplateProps {
   fontFactor?: number;
   children?: React.ReactNode;
   dropDownChildren?: React.ReactNode;
+
   className?: string;
   style?: CSSProperties;
   dropDownStyle?: CSSProperties;
@@ -57,6 +60,8 @@ interface DropDownTemplateProps {
   setSelected?: (selection: string) => void;
   onTrigger?: () => void;
   offTrigger?: () => void;
+  triggered: boolean;
+  
 }
 
 const DropDownTemplate: FunctionComponent<DropDownTemplateProps> = ({
@@ -66,62 +71,78 @@ const DropDownTemplate: FunctionComponent<DropDownTemplateProps> = ({
   fontFactor = 1,
   onTrigger,
   offTrigger,
-  className,
+  className = "",
   style,
-  ...props
+  children,
+  dropDownChildren,
+  dropDownStyle,
+  dropDownClassName,
+  triggered,
+ 
+  
 }) => {
+  const [isHovered, setHovered] = useState(false);
+
+  // Calculate styles based on factors
   const customWidth = `${widthFactor * sizeFactor * 15}rem`;
   const customFontSize = `${fontFactor * sizeFactor}rem`;
   const customBorderRadius = `${0.3 * sizeFactor}rem`;
-  const [triggered, setTriggered] = useState(false);
+
+  // Calculate shadow color
   const primaryDarkColor = theme.colors.primaryDark();
   const shadowColor = primaryDarkColor.startsWith("#")
-    ? `rgba(${parseInt(primaryDarkColor.slice(1, 3), 16)}, ${parseInt(primaryDarkColor.slice(3, 5), 16)}, ${parseInt(primaryDarkColor.slice(5, 7), 16)}, 0.3)`
+    ? `rgba(${parseInt(primaryDarkColor.slice(1, 3), 16)}, ${parseInt(
+        primaryDarkColor.slice(3, 5),
+        16
+      )}, ${parseInt(primaryDarkColor.slice(5, 7), 16)}, 0.3)`
     : primaryDarkColor;
-  const [isHovered, setHovered] = useState(false);
-  const baseStyle = {
-    width: "100%",
-    height: `${heightFactor * sizeFactor * 3}rem`,
-    fontSize: customFontSize,
-    boxShadow: triggered ? `0px 0px 4px ${shadowColor}` : "none",
-    borderRadius: customBorderRadius,
-    border:
-      isHovered || triggered
-        ? `1px solid ${theme.colors.primaryLight()}`
-        : "1px solid #ccc",
-    transition: "all 0.3s ease-in-out",
-    ...style,
+
+  const handleClick = () => {
+    if (triggered) {
+
+      offTrigger?.();
+    } else {
+
+      onTrigger?.();
+    }
   };
+
   return (
     <div className="flex flex-col" style={{ width: customWidth }}>
       <div
-        className={"flex flex-row items-center  p-2 " + className}
-        style={baseStyle}
+        className={`flex flex-row items-center p-2 ${className}`}
+        style={{
+          width: "100%",
+          height: `${heightFactor * sizeFactor * 3}rem`,
+          fontSize: customFontSize,
+          boxShadow: triggered ? `0px 0px 4px ${shadowColor}` : "none",
+          borderRadius: customBorderRadius,
+          border:
+            isHovered || triggered
+              ? `1px solid ${theme.colors.primaryLight()}`
+              : "1px solid #ccc",
+          transition: "all 0.3s ease-in-out",
+          ...style,
+        }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => {
-          setTriggered(!triggered);
-          if (triggered) {
-            offTrigger?.();
-          } else {
-            onTrigger?.();
-          }
-        }}
+        onClick={handleClick}
       >
-        {props.children}
+        {children}
       </div>
 
       {triggered && (
         <DropDownComponent
-          children={props.dropDownChildren}
           style={{
             width: customWidth,
             borderRadius: customBorderRadius,
-            ...props.dropDownStyle,
             fontSize: customFontSize,
+            ...dropDownStyle,
           }}
-          className={props.dropDownClassName}
-        />
+          className={dropDownClassName}
+        >
+          {dropDownChildren}
+        </DropDownComponent>
       )}
     </div>
   );

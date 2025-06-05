@@ -21,7 +21,8 @@ import { Route as loginRoute } from "../../../routes/login";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 import { ServiceProviderAPI } from "../../../API/BackendModules/ServiceProivder";
 import { UserAPI } from "../../../API/BackendModules/User";
-import DropdownMenu from "../../../GeneralComponents/DropDownTemplate";
+import LocationDropDown from "../../../GeneralComponents/LocationDropDown";
+import { industrialLocations } from "../../../Constants/IndustrialLocations";
 
 interface ProviderFormProps {
   className?: string;
@@ -32,9 +33,10 @@ type ProviderFormInputs = {
   organization_name: string;
   email: string;
   password: string;
-  phone_number: string;
+  contact_number: string;
   confirm_password: string;
-  whatsapp_number: string;
+  industrial_zone: string;
+  governorate: string;
 };
 
 const ProviderForm: FunctionComponent<ProviderFormProps> = ({
@@ -63,8 +65,9 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
     email: "",
     password: "",
     confirm_password: "",
-    phone_number: "",
-    whatsapp_number: "",
+    contact_number: "",
+    governorate: "",
+    industrial_zone: "",
   });
 
   const [backendErrorMessage, setBackendErrorMessage] = useState<string | null>(
@@ -210,9 +213,9 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         style={{ width: "100%" }}
         label="Contact Number"
         placeholder="Contact Number"
-        value={formData.phone_number}
+        value={formData.contact_number}
         setValue={(value) =>
-          setFormData((prev) => ({ ...prev, phone_number: value }))
+          setFormData((prev) => ({ ...prev, contact_number: value }))
         }
         inputCleaner={PhoneNumberCleaner}
         inputValidator={phoneNumberValidator}
@@ -221,8 +224,30 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           updateError(4, arg);
         }}
       />
-      <DropdownMenu/>
 
+      <LocationDropDown
+        locations={Object.keys(industrialLocations)}
+        selectedLocation={formData.governorate}
+        setSelectedLocation={(value) =>
+          setFormData((prev) => ({ ...prev, governorate: value }))
+        }
+        placeholder="Select Governorate"
+        
+      />
+      {formData.governorate && (
+        <LocationDropDown
+          locations={
+            industrialLocations[
+              formData.governorate as keyof typeof industrialLocations
+            ]
+          }
+          selectedLocation={formData.industrial_zone}
+          setSelectedLocation={(value) =>
+            setFormData((prev) => ({ ...prev, industrial_zone: value }))
+          }
+          placeholder="Select Industrial Zone"
+        />
+      )}
       <Button
         textColor="white"
         backgroundColor={theme.colors.primaryDark()}
