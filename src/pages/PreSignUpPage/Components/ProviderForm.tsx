@@ -229,10 +229,13 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         locations={Object.keys(industrialLocations)}
         selectedLocation={formData.governorate}
         setSelectedLocation={(value) =>
-          setFormData((prev) => ({ ...prev, governorate: value }))
+          setFormData((prev) => ({
+            ...prev,
+            industrial_zone: "",
+            governorate: value,
+          }))
         }
         placeholder="Select Governorate"
-        
       />
       {formData.governorate && (
         <LocationDropDown
