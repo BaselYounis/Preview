@@ -1,3 +1,7 @@
+import {
+  type IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, type CSSProperties, type FunctionComponent } from "react";
 
 interface ButtonProps {
@@ -11,6 +15,7 @@ interface ButtonProps {
   style?: CSSProperties;
   onHoverColor?: string;
   onHoverTextColor?: string;
+  icon?: IconDefinition;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -51,6 +56,7 @@ const Button: FunctionComponent<ButtonProps> = ({
     fontSize: `${sizeFactor * 18}px`,
     ...props.style,
   };
+
   return (
     <div
       style={baseStyle}
@@ -60,9 +66,10 @@ const Button: FunctionComponent<ButtonProps> = ({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="transition-all duration-300 ease-in-out"
+      className="transition-all duration-300 ease-in-out gap-x-2"
     >
-      {props.label || "Login"}
+      {props.icon && <FontAwesomeIcon icon={props.icon} />}
+      {props.label}
     </div>
   );
 };

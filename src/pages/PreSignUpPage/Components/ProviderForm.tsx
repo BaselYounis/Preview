@@ -16,13 +16,13 @@ import {
 } from "../../../ClientSide/CleanForm";
 import { useNavigate } from "@tanstack/react-router";
 import { HitBackend } from "../../../API/Communication";
-
+import { Route as loginRedirectorRoute } from "../../../routes/login-redirector";
 import { Route as loginRoute } from "../../../routes/login";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
-import { ServiceProviderAPI } from "../../../API/BackendModules/ServiceProivder";
 import { UserAPI } from "../../../API/BackendModules/User";
 import LocationDropDown from "../../../GeneralComponents/LocationDropDown";
 import { industrialLocations } from "../../../Constants/IndustrialLocations";
+import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
 
 interface ProviderFormProps {
   className?: string;
@@ -91,8 +91,14 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         return;
       }
       const createResponse = await HitBackend({
-        url: ServiceProviderAPI.URLManager.getURL("Create/"),
-        data: formData,
+        url: ManpowerSupplierAPI.URLManager.getURL("Create/"),
+        data: {
+          ...formData,
+          location: {
+            governorate: formData.governorate,
+            industrial_zone: formData.industrial_zone,
+          },
+        },
         method: "POST",
       });
 
@@ -116,10 +122,10 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
         return;
       }
 
-      // Navigate to login page on success
+      // Navigate Redirection page upon successful account creation and login
       navigate({
         from: "/",
-        to: loginRoute.path,
+        to: loginRedirectorRoute.path,
       });
     } catch (error) {
       console.error("Account creation error:", error);

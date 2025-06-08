@@ -42,6 +42,9 @@ const DashboardButton: FunctionComponent<DashboardButtonProps> = ({
       className={`flex flex-col   cursor-pointer ${className}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => {
+          props.onClick?.();
+        }}
     >
       <p
         className="mx-auto py-1"
@@ -50,9 +53,7 @@ const DashboardButton: FunctionComponent<DashboardButtonProps> = ({
         {label}
       </p>
       <div
-        onClick={() => {
-          props.onClick?.();
-        }}
+        
         style={lineStyle}
         className="bg-primary-light transition-all duration-200 ease-in-out mx-auto"
       />

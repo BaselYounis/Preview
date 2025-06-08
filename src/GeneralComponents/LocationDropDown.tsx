@@ -20,10 +20,7 @@ const LocationComponenet: FunctionComponent<LocationComponenetProps> = ({
       style={{ borderBottom: "1px solid #e5e7eb" }}
       onClick={props.onClick}
     >
-      <FontAwesomeIcon
-        icon={faLocationDot}
-        className="text-gray-500 ml-2"
-      />
+      <FontAwesomeIcon icon={faLocationDot} className="text-gray-500 ml-2" />
       {location}
     </div>
   );
@@ -46,9 +43,7 @@ const Children: FunctionComponent<ChildrenProps> = ({
         icon={faLocationDot}
         className="text-primary-light mr-2"
       />
-      <div className="font-[Poppins]">
-        {selectedLocation || placeholder}
-      </div>
+      <div className="font-[Poppins]">{selectedLocation || placeholder}</div>
       <FontAwesomeIcon
         icon={faArrowDown}
         className="text-primary-light ml-auto transition-all duration-300 ease-in-out"
@@ -105,7 +100,6 @@ const LocationDropDown: FunctionComponent<LocationDropDownProps> = ({
           placeholder={placeholder}
         />
       }
-      
       widthFactor={1.3}
       triggered={triggered}
       onTrigger={() => {
