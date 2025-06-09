@@ -7,19 +7,21 @@ interface PopUpComponentProps {
   isOpen: boolean;
   style?: CSSProperties;
   className?: string;
+  onClose?: () => void;
 }
 
 const PopUpComponent: FunctionComponent<PopUpComponentProps> = ({
   ...props
 }) => {
-  const [isOpen, setIsOpen] = useState(props.isOpen);
   const [scale, setScale] = useState(0.9);
   useEffect(() => {
-    setTimeout(() => {
-      setScale(1);
-    }, 100);
-  }, []);
-  if (!isOpen) return null;
+    if (props.isOpen === true) {
+      setTimeout(() => {
+        setScale(1);
+      }, 250);
+    }
+  }, [props.isOpen]);
+  if (!props.isOpen) return null;
   const style: CSSProperties = {
     ...props.style,
     scale: scale,
@@ -38,8 +40,8 @@ const PopUpComponent: FunctionComponent<PopUpComponentProps> = ({
             setScale(0.9);
 
             setTimeout(() => {
-              setIsOpen(false);
-            }, 400);
+              props.onClose?.();
+            }, 300);
           }}
         />
         {props.children}

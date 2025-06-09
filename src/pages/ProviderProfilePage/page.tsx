@@ -11,89 +11,21 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { theme } from "../../Constants/Colors";
-import { HitAuthBackend } from "../../API/Communication";
-import { ManpowerSupplierAPI } from "../../API/BackendModules/ManpowerSupplier";
-import PopUpComponent from "../../GeneralComponents/PopUpComponent";
 
-type providerData = {
+
+import ChangeCoverPopUp from "./Components/ChangeCoverPopUp";
+import EditProfilePopUp from "./Components/EditProfilePopUp";
+
+export type providerData = {
   organization_name: string;
   profile_picture: string | null;
   location: { governorate: string; industrial_zone: string };
   wide_profile_background: string | null;
 };
 
-async function onEditProfileClicked(providerData: providerData | null) {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-  input.onchange = (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file) {
-      // Handle the uploaded file here
-      console.log("Selected file:", file);
-      // Create FormData for proper file upload
-      const formData = new FormData();
-      formData.append("profile_picture", file);
 
-      HitAuthBackend({
-        method: "PUT",
-        url: ManpowerSupplierAPI.URLManager.getURL("Update/", "Current/"),
-        data: formData,
-      }).then((response) => {
-        if (response.success) {
-          if (providerData) {
-            localStorage.setItem(
-              ManpowerSupplierAPI.CacheAddress,
-              JSON.stringify({
-                ...providerData,
-                profile_picture: response.data.profile_picture,
-              })
-            );
-            window.location.reload(); // Reload to reflect the new cover image
-          }
-        } else {
-          console.error("Failed to update profile picture:", response.message);
-        }
-      });
-    }
-  };
-  input.click();
-}
-async function onChangeCoverClicked(providerData: providerData | null) {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-  input.onchange = (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("wide_profile_background", file);
-      HitAuthBackend({
-        method: "PUT",
-        url: ManpowerSupplierAPI.URLManager.getURL("Update/", "Current/"),
-        data: formData,
-      }).then((response) => {
-        if (response.success) {
-          if (providerData) {
-            localStorage.setItem(
-              ManpowerSupplierAPI.CacheAddress,
-              JSON.stringify({
-                ...providerData,
-                wide_profile_background: response.data.wide_profile_background,
-              })
-            );
-            window.location.reload(); // Reload to reflect the new cover image
-          }
-        } else {
-          console.error("Failed to update cover image:", response.message);
-        }
-      });
-    }
-  };
-  input.click();
-}
 
-function getProviderData(): providerData | null {
+export function getProviderData(): providerData | null {
   const cachedData = localStorage.getItem("manpowerSupplierData");
   if (cachedData) {
     return JSON.parse(cachedData);
@@ -104,7 +36,8 @@ function getProviderData(): providerData | null {
 
 function HeroSection() {
   const [providerData, setProviderData] = useState<providerData | null>(null);
-
+  const [isChangeCoverOpen, setIsChangeCoverOpen] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   useEffect(() => {
     const data = getProviderData();
     setProviderData(data);
@@ -134,7 +67,10 @@ function HeroSection() {
           onHoverColor={theme.colors.primaryLight()}
           onHoverTextColor="white"
           label="Change Cover"
-          onClick={() => onChangeCoverClicked(providerData)}
+          onClick={() => {
+            setIsChangeCoverOpen(true);
+            console.log("Change Cover Clicked  " + isChangeCoverOpen);
+          }}
         />
       </div>
       <div className="flex flex-row h-[200px] w-full bg-[#FFFFFF]  mt-auto">
@@ -164,7 +100,7 @@ function HeroSection() {
             sizeFactor={0.9}
             icon={faEye}
           />
-          <PopUpComponent isOpen={true} />
+
           <Button
             style={{
               width: "fit-content",
@@ -175,7 +111,7 @@ function HeroSection() {
             widthFactor={1.5}
             sizeFactor={0.9}
             icon={faEdit}
-            onClick={() => onEditProfileClicked(providerData)}
+            onClick={() => setIsEditProfileOpen(true)}
           />
         </div>
       </div>
@@ -190,6 +126,14 @@ function HeroSection() {
           alt="User Profile"
         />
       </div>
+      <ChangeCoverPopUp
+        isOpen={isChangeCoverOpen}
+        onClose={() => setIsChangeCoverOpen(false)}
+      />
+      <EditProfilePopUp
+        isOpen={isEditProfileOpen}
+        onClose={() => setIsEditProfileOpen(false)}
+      />
     </div>
   );
 }
