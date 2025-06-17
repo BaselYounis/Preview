@@ -6,7 +6,7 @@ import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
 import { HitAuthBackend } from "../../../API/Communication";
 import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
-import { getProviderData } from "../page";
+import { getProviderData } from "../HelperFunctions";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 async function onRemovePhotoClicked(
   setErrorMessage: (message: string) => void

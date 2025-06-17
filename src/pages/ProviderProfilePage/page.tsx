@@ -5,6 +5,7 @@ import defaultWideProfileBackground from "../../assets/images/defaultProfileWide
 import Button from "../../GeneralComponents/Button";
 import {
   faCamera,
+  faClock,
   faEdit,
   faEye,
   faLocationDot,
@@ -12,27 +13,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { theme } from "../../Constants/Colors";
 
-
 import ChangeCoverPopUp from "./Components/ChangeCoverPopUp";
 import EditProfilePopUp from "./Components/EditProfilePopUp";
-
-export type providerData = {
-  organization_name: string;
-  profile_picture: string | null;
-  location: { governorate: string; industrial_zone: string };
-  wide_profile_background: string | null;
-};
+import { getProviderData, type providerData } from "./HelperFunctions";
+import DescriptionSection from "./Components/DescriptionSection";
 
 
 
-export function getProviderData(): providerData | null {
-  const cachedData = localStorage.getItem("manpowerSupplierData");
-  if (cachedData) {
-    return JSON.parse(cachedData);
-  } else {
-    return null;
-  }
-}
+
+
 
 function HeroSection() {
   const [providerData, setProviderData] = useState<providerData | null>(null);
@@ -83,6 +72,10 @@ function HeroSection() {
             {providerData?.location.governorate || "Governorate"}
             {" - "}
             {providerData?.location.industrial_zone}
+            {" | "}
+            <FontAwesomeIcon icon={faClock} />
+            {" Member since " +
+              new Date(providerData?.created_at || "").getFullYear()}
           </div>
         </div>
         <div className="flex flex-row  gap-x-2 ml-auto mr-10  mt-[20px]">
@@ -138,10 +131,18 @@ function HeroSection() {
   );
 }
 
+
 function ProviderProfilePage() {
   return (
     <ProviderDashboardPageHeaderFooter>
       <HeroSection />
+      <div className="flex flex-row bg-amber-300 h-fit">
+        <div className="flex flex-col bg-white h-full w-full">
+        <DescriptionSection />
+        </div>
+        <div className="flex flex-col bg-cyan-400 h-full w-[500px] ml-auto"></div>
+      </div>
+      {/* <div className="h-100 w-100 bg-amber-400"></div> */}
     </ProviderDashboardPageHeaderFooter>
   );
 }
