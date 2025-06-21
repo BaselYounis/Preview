@@ -23,7 +23,7 @@ import { UserAPI } from "../../../API/BackendModules/User";
 import LocationDropDown from "../../../GeneralComponents/LocationDropDown";
 
 import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
-import { industrialLocations } from "../../../Constants/IndustrialLocations";
+import { industrialLocations } from "../../../Constants/Locations";
 
 
 interface ProviderFormProps {
