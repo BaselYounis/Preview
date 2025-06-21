@@ -21,7 +21,7 @@ import { Route as loginRoute } from "../../../routes/login";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 import { UserAPI } from "../../../API/BackendModules/User";
 import LocationDropDown from "../../../GeneralComponents/LocationDropDown";
-import { industrialLocations } from "../../../Constants/IndustrialLocations";
+import { industrialCategories } from "../../../Constants/industrialCategories";
 import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
 
 interface ProviderFormProps {
@@ -232,7 +232,7 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
       />
 
       <LocationDropDown
-        locations={Object.keys(industrialLocations)}
+        locations={Object.keys(industrialCategories)}
         selectedLocation={formData.governorate}
         setSelectedLocation={(value) =>
           setFormData((prev) => ({
@@ -246,10 +246,11 @@ const ProviderForm: FunctionComponent<ProviderFormProps> = ({
       {formData.governorate && (
         <LocationDropDown
           locations={
-            industrialLocations[
-              formData.governorate as keyof typeof industrialLocations
-            ]
-          }
+            industrialCategories[
+              formData.governorate as keyof typeof industrialCategories
+            ].subcategories.map(
+              (subCategory) => subCategory.name
+            )}
           selectedLocation={formData.industrial_zone}
           setSelectedLocation={(value) =>
             setFormData((prev) => ({ ...prev, industrial_zone: value }))

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProviderDashboardPageHeaderFooter from "../../GeneralComponents/ProviderDashboardHeaderFooter";
-import defaultUserProfilePicture from "../../assets/images/defaultUserImage.png";
-import defaultWideProfileBackground from "../../assets/images/defaultProfileWideBackgroundBlack.png";
+import defaultUserProfilePicture from "../../assets/images/compressedDefaultUserImage.jpg";
+import defaultWideProfileBackground from "../../assets/images/compressedDefaultProfileWideBackgroundBlack.jpg";
 import Button from "../../GeneralComponents/Button";
 import {
   faCamera,

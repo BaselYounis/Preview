@@ -35,7 +35,7 @@ const DateField: FunctionComponent<DateFieldProps> = ({
   ErrorComp = ErrorComponent,
   outline,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  errorIndicator,
+
   setErrorIndicator,
 }) => {
   const [isHovered, setHovered] = useState(false);

@@ -1,8 +1,6 @@
 import ImageCarousel from "../../GeneralComponents/Carousel/ImageCarousel";
 // Import the images directly to let Vite handle asset bundling
-import image1 from "../../assets/images/pexels-life-of-pix-2391.jpg";
-import image2 from "../../assets/images/pexels-kateryna-babaieva-1423213-2760241.jpg";
-import image3 from "../../assets/images/pexels-klaus-44936-167676.jpg";
+import image1 from "../../assets/images/compressedInudstrial.jpg";
 
 import {
   AttachMoneyOutlined,
@@ -27,7 +25,7 @@ function onSignUpButtonClicked(navigate: ReturnType<typeof useNavigate>) {
 }
 function LandingPage() {
   // Use imported images to ensure proper bundling and paths in production
-  const carouselImages = [image1, image2, image3];
+  const carouselImages = [image1];
   const navigate = useNavigate();
   function CarouselChild() {
     return (

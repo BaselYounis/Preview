@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import FooterContent from "../pages/LoginPage/Components/FooterContent";
 import Header from "./Header";
 import DashboardButton from "./DashboardButton";
-import defaultUserProfilePicture from "../assets/images/defaultUserImage.png";
+import defaultUserProfilePicture from "../assets/images/compressedDefaultUserImage.jpg";
 import { HitAuthBackend } from "../API/Communication";
 import { ManpowerSupplierAPI } from "../API/BackendModules/ManpowerSupplier";
 import { getProviderData } from "../pages/ProviderProfilePage/HelperFunctions";
