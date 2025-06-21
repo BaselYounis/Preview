@@ -59,6 +59,7 @@ function LandingPage() {
           sizeFactor={0.8}
           backgroundColor={theme.colors.primaryDark()}
           onHoverColor={theme.colors.primaryLight()}
+          label="Login"
           textColor={"white"}
           onClick={() => {
             navigate({

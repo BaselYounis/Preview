@@ -17,6 +17,7 @@ import ChangeCoverPopUp from "./Components/ChangeCoverPopUp";
 import EditProfilePopUp from "./Components/EditProfilePopUp";
 import { getProviderData, type providerData } from "./HelperFunctions";
 import DescriptionSection from "./Components/DescriptionSection";
+import ServicesSection from "./Components/ServicesSection";
 
 
 
@@ -141,10 +142,11 @@ function ProviderProfilePage() {
       <div className="flex flex-row bg-amber-300 h-fit">
         <div className="flex flex-col bg-white h-full w-full">
           <DescriptionSection  />
+          <ServicesSection/>
         </div>
         <div className="flex flex-col bg-cyan-400 h-full w-[500px] ml-auto"></div>
       </div>
-      {/* <div className="h-100 w-100 bg-amber-400"></div> */}
+
   
     </ProviderDashboardPageHeaderFooter>
   );

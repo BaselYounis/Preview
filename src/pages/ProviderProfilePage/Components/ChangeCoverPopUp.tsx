@@ -6,7 +6,7 @@ import Button from "../../../GeneralComponents/Button";
 import { theme } from "../../../Constants/Colors";
 import { HitAuthBackend } from "../../../API/Communication";
 import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
-import { getProviderData } from "../HelperFunctions";
+import { getProviderData, updateProviderData } from "../HelperFunctions";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 async function onRemovePhotoClicked(
   setErrorMessage: (message: string) => void
@@ -50,17 +50,11 @@ async function onUploadPhotoClicked(
         data: formData,
       }).then((response) => {
         if (response.success) {
-          const providerData = getProviderData();
-          if (providerData) {
-            localStorage.setItem(
-              ManpowerSupplierAPI.CacheAddress,
-              JSON.stringify({
-                ...providerData,
-                wide_profile_background: response.data.wide_profile_background,
-              })
-            );
-            window.location.reload(); // Reload to reflect the new cover image
-          }
+          updateProviderData(
+            "wide_profile_background",
+            response.data.wide_profile_background
+          );
+          window.location.reload();
         } else {
           if (response.message) {
             console.log(response.message);

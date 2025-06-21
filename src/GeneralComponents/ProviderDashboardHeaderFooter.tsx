@@ -6,6 +6,7 @@ import DashboardButton from "./DashboardButton";
 import defaultUserProfilePicture from "../assets/images/defaultUserImage.png";
 import { HitAuthBackend } from "../API/Communication";
 import { ManpowerSupplierAPI } from "../API/BackendModules/ManpowerSupplier";
+import { getProviderData } from "../pages/ProviderProfilePage/HelperFunctions";
 interface DashboardPageHeaderFooterProps {
   children?: React.ReactNode;
 }
@@ -20,8 +21,13 @@ const getManpowerSupplierData = async () => {
 const ProviderDashboardPageHeaderFooter: FunctionComponent<
   DashboardPageHeaderFooterProps
 > = ({ children }) => {
-  const [providerName, setProviderName] = useState<string | null>(null);
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const providerData = getProviderData();
+  const [providerName, setProviderName] = useState<string | null>(
+    providerData?.organization_name || null
+  );
+  const [profilePicture, setProfilePicture] = useState<string | null>(
+    providerData?.profile_picture || null
+  );
 
   useEffect(() => {
     // Try to get data from localStorage first

@@ -15,12 +15,14 @@ interface ButtonProps {
   onHoverTextColor?: string;
   icon?: IconDefinition;
   className?: string;
+  fontFactor?: number;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
   sizeFactor = 1,
   widthFactor = 1,
   heightFactor = 1,
+  fontFactor = 1,
   ...props
 }) => {
   const changeScaleWhenClicked = () => {
@@ -50,9 +52,9 @@ const Button: FunctionComponent<ButtonProps> = ({
     fontFamily: "sans-serif",
     fontWeight: "400",
     scale: `${scale}`,
-    width: `${widthFactor * 75}px`,
-    height: `${heightFactor * 40}px`,
-    fontSize: `${sizeFactor * 18}px`,
+    width: `${widthFactor *sizeFactor* 75}px`,
+    height: `${heightFactor* sizeFactor * 40}px`,
+    fontSize: `${sizeFactor*fontFactor * 18}px`,
     ...props.style,
   };
 

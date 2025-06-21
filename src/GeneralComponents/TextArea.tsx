@@ -28,12 +28,11 @@ const TextArea: FunctionComponent<TextAreaProps> = ({ ...props }) => {
       style={style}
       value={props.text}
       placeholder={props.placeholder}
-      defaultValue={props.text}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onChange={(e) => {
         if (props.setText) {
-          console.log("TextArea onChange: "+props.text);
+          console.log("TextArea onChange: " + props.text);
           props.setText(e.target.value);
         }
       }}

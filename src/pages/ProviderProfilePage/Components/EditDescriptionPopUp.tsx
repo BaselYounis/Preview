@@ -28,13 +28,13 @@ async function onConfirmClicked(
   }).then((res) => {
     if (res.success) {
       updateProviderData("description", description);
+      // console.log(res.data)
       window.location.reload();
     } else {
-    
       setErrorMessage(res.message);
-        setTimeout(() => {
-          setErrorMessage(undefined);
-        }, 3000);
+      setTimeout(() => {
+        setErrorMessage(undefined);
+      }, 3000);
     }
   });
 }
@@ -60,7 +60,7 @@ const EditDescriptionPopUp: FunctionComponent<EditDescriptionPopUpProps> = ({
         text={description || ""}
         setText={setDescription}
         placeholder="Enter description"
-        className="mt-5"
+        className="mt-5 font-[Poppins] text-primary-light"
       />
       <div className="flex flex-row gap-x-4 mt-5">
         <Button
@@ -71,15 +71,16 @@ const EditDescriptionPopUp: FunctionComponent<EditDescriptionPopUpProps> = ({
           onHoverTextColor="white"
           widthFactor={1.5}
           onClick={props.onCancel}
+          sizeFactor={0.8}
         />
         <Button
           label="Confirm"
           icon={faCheck}
           backgroundColor={theme.colors.primaryLight()}
           textColor="white"
+          sizeFactor={0.8}
           widthFactor={2.3}
           onClick={() => {
-            console.log("Confirm clicked with description: ", description);
             if (description) onConfirmClicked(description, setErrorMessage);
           }}
         />

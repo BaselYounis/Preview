@@ -3,15 +3,24 @@
 #root {
 
 }
-@theme{
-    --color-primary-dark:#1C1C1C;
-    /* --color-primary-dark:#0d2038; */
-    /* --color-primary-light:#1b334f; */
-    --color-primary-light:#2D2D2D;
-    --color-primary-lighter:#424242;
-    --color-gray-light:#767676;
-    --color-white-gray:#d4d6d5;
-    --color-error-red:#E53935;
+@theme {
+  --color-primary-dark: #1C1C1C;
+  --color-primary-light: #2D2D2D;
+  --color-primary-lighter: #424242;
+  --color-gray-light: #767676;
+  --color-white-gray: #d4d6d5;
+  --color-error-red: #E53935;
+
+  --color-industrial-automation: #f39c12;
+  --color-electrical-engineering: #2980b9;
+  --color-mechanical-engineering: #7f8c8d;
+  --color-instrumentation-control: #8e44ad;
+  --color-software-digital: #2ecc71;
+  --color-cybersecurity-it: #e74c3c;
+  --color-maintenance-field: #d35400;
+  --color-supply-chain: #16a085;
+  --color-energy-sustainability: #27ae60;
+  --color-hse: #c0392b;
 }
 
 

@@ -22,8 +22,9 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = () => {
     <Fragment>
       <EditDescriptionPopUp
         isOpen={isEditDescriptionOpen}
+        onCancel={() => setIsEditDescriptionOpen(false)}
         onClose={() => setIsEditDescriptionOpen(false)}
-   
+
       />
       <div
         className="flex flex-col w-full bg-white hover:border-1 hover:-translate-y-1 mt-10 rounded-[10px] p-2 transition-all duration-300"
@@ -42,7 +43,7 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = () => {
             widthFactor={0.5}
             onHoverColor={theme.colors.primaryLight()}
             onHoverTextColor="white"
-            sizeFactor={0.9}
+            sizeFactor={0.7}
             onClick={() => {
               setIsEditDescriptionOpen(true);
             }}

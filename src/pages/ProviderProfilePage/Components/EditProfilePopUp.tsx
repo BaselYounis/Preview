@@ -7,7 +7,7 @@ import { theme } from "../../../Constants/Colors";
 import ErrorComponent from "../../../GeneralComponents/ErrorComponent";
 import { HitAuthBackend } from "../../../API/Communication";
 import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
-import { getProviderData } from "../HelperFunctions";
+import { getProviderData, updateProviderData } from "../HelperFunctions";
 
 async function onRemovePhotoClicked(
   setErrorMessage: (message: string) => void
@@ -53,17 +53,8 @@ async function onUploadPhotoClicked(
         data: formData,
       }).then((response) => {
         if (response.success) {
-          const providerData = getProviderData();
-          if (providerData) {
-            localStorage.setItem(
-              ManpowerSupplierAPI.CacheAddress,
-              JSON.stringify({
-                ...providerData,
-                profile_picture: response.data.profile_picture,
-              })
-            );
-            window.location.reload(); // Reload to reflect the new cover image
-          }
+          updateProviderData("profile_picture", response.data.profile_picture);
+          window.location.reload();
         } else {
           if (response.message) setErrorMessage(response.message);
         }
