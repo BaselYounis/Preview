@@ -25,6 +25,7 @@ import LocationDropDown from "../../../GeneralComponents/LocationDropDown";
 import { ManpowerSupplierAPI } from "../../../API/BackendModules/ManpowerSupplier";
 import { industrialLocations } from "../../../Constants/IndustrialLocations";
 
+
 interface ProviderFormProps {
   className?: string;
   style?: CSSProperties;
