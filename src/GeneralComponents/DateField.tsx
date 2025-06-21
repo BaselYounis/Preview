@@ -1,44 +1,42 @@
 import React, { useState, type FunctionComponent } from "react";
 import { theme } from "../Constants/Colors";
 import ErrorComponent, { type ErrorComponentProps } from "./ErrorComponent";
-interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+
+interface DateFieldProps {
+  date?: Date;
+  setDate: (date: Date) => void;
+  label?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
   sizeFactor?: number;
   widthFactor?: number;
   heightFactor?: number;
   fontFactor?: number;
-  label?: string;
-  placeholder?: string;
-  className?: string;
-  value?: string;
-  setValue: (value: string) => void;
-  inputCleaner?: (value: string) => string;
-  inputValidator?: (value: string) => { success: boolean; message: string };
+  inputValidator?: (value: Date) => { success: boolean; message: string };
   ErrorComp?: React.ComponentType<ErrorComponentProps>;
-  textAlign?: "left" | "center" | "right";
-  ref?: React.Ref<HTMLInputElement>;
   outline?: boolean;
   errorIndicator?: boolean;
   setErrorIndicator?: (value: boolean) => void;
 }
 
-const TextField: FunctionComponent<TextFieldProps> = ({
+const DateField: FunctionComponent<DateFieldProps> = ({
+  date,
+  setDate,
+  label,
+  placeholder = "Select a date",
+  disabled = false,
+  className = "",
   sizeFactor = 1,
   widthFactor = 1,
   heightFactor = 1,
   fontFactor = 1,
-  ErrorComp = ErrorComponent,
-  value,
-  setValue,
-  outline,
-  inputCleaner,
   inputValidator,
-  setErrorIndicator,
+  ErrorComp = ErrorComponent,
+  outline,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   errorIndicator,
-
-  textAlign,
-
-  ...props
+  setErrorIndicator,
 }) => {
   const [isHovered, setHovered] = useState(false);
   const [allowValidation, setAllowValidation] = useState(false);
@@ -47,6 +45,24 @@ const TextField: FunctionComponent<TextFieldProps> = ({
   const shadowColor = primaryDarkColor.startsWith("#")
     ? `rgba(${parseInt(primaryDarkColor.slice(1, 3), 16)}, ${parseInt(primaryDarkColor.slice(3, 5), 16)}, ${parseInt(primaryDarkColor.slice(5, 7), 16)}, 0.3)`
     : primaryDarkColor;
+  // Convert Date to string format for input[type="date"]
+  const formatDateForInput = (date: Date): string => {
+    return date.toISOString().split("T")[0];
+  };
+  // Handle date change from input
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (value) {
+      const newDate = new Date(value);
+      setAllowValidation(true);
+
+      if (inputValidator && setErrorIndicator) {
+        setErrorIndicator(!inputValidator(newDate).success);
+      }
+
+      setDate(newDate);
+    }
+  };
 
   const baseStyle = {
     width: `${widthFactor * sizeFactor * 20}rem`,
@@ -58,11 +74,11 @@ const TextField: FunctionComponent<TextFieldProps> = ({
       isHovered || outline
         ? `1px solid ${theme.colors.primaryLight()}`
         : "1px solid #ccc",
-    ...props.style,
   };
+
   return (
-    <div className={props.className}>
-      {props.label && (
+    <div className={className}>
+      {label && (
         <div
           style={{
             fontFamily: "Poppins",
@@ -70,47 +86,39 @@ const TextField: FunctionComponent<TextFieldProps> = ({
           }}
           className="text-primary-light"
         >
-          {props.label}
+          {label}
         </div>
       )}
       <div
         style={baseStyle}
-        className="flex flex-col p-2 items-center  justify-center mt-1 transition-all duration-200 ease-in-out"
+        className="flex flex-col p-2 items-center justify-center mt-1 transition-all duration-200 ease-in-out"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
         <input
-          {...props}
-          value={value}
-          onChange={(e) => {
-            props.onChange?.(e);
-            setAllowValidation(true);
-            if (inputCleaner) e.target.value = inputCleaner(e.target.value);
-            if (inputValidator)
-              if (setErrorIndicator)
-                setErrorIndicator(!inputValidator(e.target.value).success);
-
-            setValue(e.target.value);
-          }}
-          placeholder={props.placeholder}
+          type="date"
+          value={date ? formatDateForInput(date) : ""}
+          onChange={handleDateChange}
+          placeholder={placeholder}
+          disabled={disabled}
           style={{
             width: "100%",
             height: "100%",
             border: "none",
             outline: "none",
             fontSize: `${sizeFactor * fontFactor}rem`,
-            textAlign: textAlign || "left",
+            fontFamily: "Poppins",
           }}
           className="bg-white"
-          ref={props.ref}
-          autoComplete="new-password"  //tricks browsers to not save the password
         />
       </div>
-      {allowValidation  && value && inputValidator &&
-        !inputValidator(value).success &&
-        ErrorComp && <ErrorComp errorMessage={inputValidator(value).message} />}
+      {allowValidation &&
+        date &&
+        inputValidator &&
+        !inputValidator(date).success &&
+        ErrorComp && <ErrorComp errorMessage={inputValidator(date).message} />}
     </div>
   );
 };
 
-export default TextField;
+export default DateField;

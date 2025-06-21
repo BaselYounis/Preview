@@ -1,7 +1,7 @@
 import type { CSSProperties } from "@mui/material";
 import { useState, type FunctionComponent } from "react";
 interface TextAreaProps {
-  text: string;
+  text?: string;
   setText?: (text: string) => void;
   placeholder?: string;
   sizeFactor?: number;
